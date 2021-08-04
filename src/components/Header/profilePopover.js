@@ -7,6 +7,7 @@ import {
   PopoverFooter,
   PopoverTrigger,
   Avatar,
+  Icon
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
@@ -26,7 +27,7 @@ export function ProfilePopover({ name }){
           <p>Suporte</p>
         </PopoverBody>
         <PopoverFooter fontWeight="italic">
-          <RiLogoutBoxRLine />
+          <Icon as={RiLogoutBoxRLine} /> Sair
         </PopoverFooter>
       </PopoverContent>
     </Popover>

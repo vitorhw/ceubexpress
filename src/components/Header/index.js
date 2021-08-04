@@ -8,7 +8,7 @@ export function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { cartItem, isCartItem } = useState(false);
   // TODO: BIND LOGIN STATE WITH NEXT-AUTH
-  const { isLoggedIn, setIsLoggedIn } = useState(true);
+  const { isLoggedIn, setIsLoggedIn } = useState(false);
 
   return (
     <Flex as="header" w="100%" pt="8" justify="center" h="10vh">
@@ -22,7 +22,7 @@ export function Header() {
 
         <HStack spacing="2">
           <CartPopover isCartItem={isCartItem} />
-          { isLoggedIn ? <ProfilePopover name={"John Doe"} /> : <p>Login</p>}
+          {isLoggedIn ? <ProfilePopover name={"John Doe"} /> : <ProfilePopover name={"John Doe"} />}
         </HStack>
 
       </HStack>

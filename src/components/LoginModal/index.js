@@ -7,7 +7,7 @@ const modalStyles = {
     backgroundColor: 'rgba(0, 0, 0, 0.2)'
   },
   content: {
-    maxWidth: '1300px',
+    maxWidth: '800px',
     width: '80%',
     height: '512px',
     position: 'absolute',

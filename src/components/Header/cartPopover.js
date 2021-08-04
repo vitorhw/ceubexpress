@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { RiShoppingCart2Line } from 'react-icons/ri';
 
-export function CartPopover({ isCartItem }){
+export function CartPopover({ isCartItem }) {
   return(
     <Popover isLazy trigger="hover">
       <PopoverTrigger>

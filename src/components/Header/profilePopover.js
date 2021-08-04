@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
-export function ProfilePopover({ name }){
+export function ProfilePopover({ name }) {
   return(
     <Popover isLazy trigger="click" >
       <PopoverTrigger>

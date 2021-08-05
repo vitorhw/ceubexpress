@@ -7,14 +7,17 @@ import {
   InputRightElement,
   Text,
   VStack,
+  useColorMode
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+
 export function LoginInput() {
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
-
   const [isLogging, setIsLogging] = useState(false);
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const handleClick = () => setShow(!show);
   
   function handleLogin() {
     setIsLogging(true)
@@ -26,7 +29,7 @@ export function LoginInput() {
       align="center"
       alignSelf="center"
       boxSize="50%"
-      boxShadow="xs"
+      border={colorMode === 'light' ? "1px solid rgba(0, 0, 0, 0.1)" : "1px solid rgba(255, 255, 255, 0.1)"}
       p="6"
       rounded="md"
     >

@@ -1,10 +1,11 @@
 import Modal from 'react-modal';
 import { useState } from 'react';
-import { Box, Image, HStack, Flex, Spacer, useColorMode } from '@chakra-ui/react';
+import { Image, Flex, Spacer } from '@chakra-ui/react';
+import { LoginInput } from './LoginInput';
 
 const modalStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)'
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   content: {
     maxWidth: '800px',
@@ -17,34 +18,31 @@ const modalStyles = {
     padding: 'none',
     margin: 'none',
     overflow: 'hidden',
-    border: 'none'
-  }
-}
+    border: 'none',
+  },
+};
 
 export function LoginModal() {
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   function handleClose() {
     setIsModalOpen(false);
   }
 
   return (
-    <Modal 
+    <Modal
       isOpen={isModalOpen}
       onRequestClose={handleClose}
       style={modalStyles}
       contentLabel="Modal"
     >
-
       <Flex>
-        <Box boxSize="50%">
-          Login
-        </Box>
         <Spacer />
-        <Image height="512px" src='./images/login.jpeg' alt="login-image"/>
+
+        <LoginInput />
+        <Spacer />
+        <Image height="512px" src="./images/login.jpeg" alt="login-image" />
       </Flex>
-
-
     </Modal>
   );
 }

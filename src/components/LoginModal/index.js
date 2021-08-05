@@ -49,8 +49,8 @@ export function LoginModal() {
           cursor="pointer" 
           fontSize='1.5rem' 
           position='absolute' 
-          top='0' 
-          right='0'
+          top='1rem' 
+          right='1rem'
           as={RiCloseFill}
           onClick={handleClose} 
           />

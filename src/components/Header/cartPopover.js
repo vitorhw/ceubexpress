@@ -1,13 +1,13 @@
 import {
-  Button,
   Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
   Text,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
 import { RiShoppingCart2Line } from 'react-icons/ri';
 
@@ -15,19 +15,21 @@ export function CartPopover({ isCartItem }) {
   return(
     <Popover isLazy trigger="hover">
       <PopoverTrigger>
-        <Button variant="unstyled" fontSize="1.5rem">
-          <RiShoppingCart2Line as="button" />
-        </Button>
+        <IconButton 
+          variant="unstyled" 
+          fontSize="1.5rem" 
+          lineHeight="0" 
+          icon={<Icon as={ RiShoppingCart2Line }/>} 
+        />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent width="14rem">
         <PopoverHeader fontWeight="semibold">
           Carrinho de compras
         </PopoverHeader>
         <PopoverArrow />
-        <PopoverCloseButton />
         <PopoverBody>
           {!isCartItem ? (
-            <Text>Nenhum item adicionado</Text>
+            <Text>Nenhum item adicionado :(</Text>
           ) : (
             <Text>Arroz</Text>
           )}

@@ -23,7 +23,7 @@ export function ProductBox() {
       direction="column"
       width="240px"
       height="400px"
-      border="0.5px solid #C4C4C4"
+      border="0.5px solid rgba(196, 196, 196, 0.3)"
       overflow="hidden"
       role="group"
       cursor="pointer"

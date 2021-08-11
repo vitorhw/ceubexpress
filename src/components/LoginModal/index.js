@@ -1,18 +1,20 @@
 import Modal from 'react-modal';
 import { useState } from 'react';
-import { Image, Flex, Spacer, Icon } from '@chakra-ui/react';
+import { Image, Flex, Spacer, Icon, useColorMode } from '@chakra-ui/react';
 import { LoginInput } from './LoginInput';
 import { RiCloseFill } from 'react-icons/ri'
 
 
 export function LoginModal() {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const modalStyles = {
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      backgroundColor: "rgba(0, 0, 0, 0.4)"
     },
     content: {
+      background: (colorMode === 'light') ? "white" : "rgba(32, 27, 45, 1)",
       maxWidth: '800px',
       width: '80%',
       height: '512px',

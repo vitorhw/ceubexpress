@@ -1,9 +1,4 @@
 import {
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverHeader,
   Image,
   Spacer,
   Flex,
@@ -60,17 +55,17 @@ export function ProductBox() {
         </Box>
         <Spacer />
         <Flex
-          _groupHover={{ opacity: 1 }}
-          background="#FF9737"
+          _groupHover={{ opacity: 1, width: '100%' }}
           opacity="0"
-          width="100%"
+          background="#FF9737"
+          width="0px"
           align="center"
           justify="center"
           p="1rem"
-          transition="0.3s ease"
+          transition="width 0.3s ease"
         >
           <Icon
-            color="#FFF" 
+            color="white"
             fontSize="1.5rem"
             as={RiShoppingCart2Fill} />
         </Flex>

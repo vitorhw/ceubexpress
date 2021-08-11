@@ -25,10 +25,8 @@ export function Header() {
           <CartPopover isCartItem={isCartItem} />
             {isAuthenticated ? <ProfilePopover name={"John Doe"} /> : <p>Login</p>}
         </HStack>
-
       </HStack>
     </Flex>
-
     <LoginModal />
     </>
   );

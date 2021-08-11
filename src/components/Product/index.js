@@ -1,8 +1,6 @@
 import { Grid, Flex } from '@chakra-ui/react';
 import { ProductBox } from './ProductBox';
 
-
-
 export function Product() {
   return (
     <Flex w="100%" justify="center" mt="4rem">

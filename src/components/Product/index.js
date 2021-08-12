@@ -4,9 +4,13 @@ import { ProductBox } from './ProductBox';
 export function Product() {
   return (
     <Flex w="100%" justify="center" mt="4rem">
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+      <Grid
+        templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
+        gap={6}
+      >
         <ProductBox />
         <ProductBox />
+
         <ProductBox />
         <ProductBox />
         <ProductBox />

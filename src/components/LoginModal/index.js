@@ -2,19 +2,21 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { Image, Flex, Spacer, Icon, useColorMode } from '@chakra-ui/react';
 import { LoginInput } from './LoginInput';
-import { RiCloseFill } from 'react-icons/ri'
+import { RiCloseFill } from 'react-icons/ri';
 
-
-export function LoginModal() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+export function LoginModal({
+  isLoginModalOpen,
+  setIsLoginModalOpen,
+  handleLoginClose,
+}) {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const modalStyles = {
     overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.4)"
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
     content: {
-      background: (colorMode === 'light') ? "white" : "rgba(32, 27, 45, 1)",
+      background: colorMode === 'light' ? 'white' : 'rgba(32, 27, 45, 1)',
       maxWidth: '800px',
       width: '80%',
       height: '512px',
@@ -29,14 +31,10 @@ export function LoginModal() {
     },
   };
 
-  function handleClose() {
-    setIsModalOpen(false);
-  }
-
   return (
     <Modal
-      isOpen={isModalOpen}
-      onRequestClose={handleClose}
+      isOpen={isLoginModalOpen}
+      onRequestClose={handleLoginClose}
       style={modalStyles}
       contentLabel="Modal"
     >
@@ -44,16 +42,24 @@ export function LoginModal() {
         <Spacer />
         <LoginInput />
         <Spacer />
-        <Image height="512px" src="./images/login_white.jpeg" alt="login-image" />
-        <Icon 
-          cursor="pointer" 
-          fontSize='1.5rem' 
-          position='absolute' 
-          top='1rem' 
-          right='1rem'
+        <Image
+          height="512px"
+          src={
+            colorMode === 'light'
+              ? '/images/login_white.jpeg'
+              : '/images/login.jpeg'
+          }
+          alt="login-image"
+        />
+        <Icon
+          cursor="pointer"
+          fontSize="1.5rem"
+          position="absolute"
+          top="1rem"
+          right="1rem"
           as={RiCloseFill}
-          onClick={handleClose} 
-          />
+          onClick={handleLoginClose}
+        />
       </Flex>
     </Modal>
   );

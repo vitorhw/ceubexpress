@@ -15,8 +15,8 @@ import { ProfilePopover } from './ProfilePopover';
 
 export function Header({ setIsLoginModalOpen }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { cartItem, isCartItem } = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useState(true);
+  const [ isCartItem, setCartItem ] = useState(true);
+  const [ isAuthenticated, setIsAuthenticated ] = useState(true);
 
   const isSmallVersion = useBreakpointValue({
     base: false,

@@ -8,16 +8,13 @@ export function Product() {
         templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
         gap={6}
       >
-        <ProductBox />
-        <ProductBox />
-
-        <ProductBox />
-        <ProductBox />
-        <ProductBox />
-        <ProductBox />
-        <ProductBox />
-        <ProductBox />
-        <ProductBox />
+        <ProductBox isFavourite={true} />
+        <ProductBox isFavourite={false} />
+        <ProductBox isFavourite={false} />
+        <ProductBox isFavourite={false} />
+        <ProductBox isFavourite={false} />
+        <ProductBox isFavourite={true} />
+        <ProductBox isFavourite={false} />
       </Grid>
     </Flex>
   );

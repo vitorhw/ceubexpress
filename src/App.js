@@ -4,11 +4,12 @@ import { LoginModal } from "./components/LoginModal";
 import { Product } from "./components/Product";
 
 function App() {
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(true);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     function handleLoginClose() {
       setIsLoginModalOpen(false);
     }
+    
   return (
     <>
       <LoginModal

@@ -8,10 +8,10 @@ import {
   HStack,
   Box,
 } from '@chakra-ui/react';
-import { RiShoppingCart2Fill, RiStarLine } from 'react-icons/ri'
+import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri'
 
 
-export function ProductBox() {
+export function ProductBox({ isFavourite = true }) {
   return (
     <Flex
       _hover={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}
@@ -25,7 +25,16 @@ export function ProductBox() {
     >
       <VStack
         alignItems="flex-start"
+        position="relative"
       >
+        <Icon as={isFavourite ? RiStarFill : RiStarLine}
+          position="absolute"
+          top="0.5rem"
+          right="0.5rem"
+          opacity="0.5"
+          color={isFavourite ? "yellow.400" : "gray.400"}
+          _hover={{ opacity: 1 }}
+        />
         <Flex height="180px" overflow="hidden" align="center" p="1rem">
           <Image 
             objectFit="cover"
@@ -67,6 +76,7 @@ export function ProductBox() {
           <Icon
             color="white"
             fontSize="1.5rem"
+            transform="translateY(-25%)"
             as={RiShoppingCart2Fill} />
         </Flex>
       </VStack>

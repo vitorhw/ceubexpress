@@ -46,8 +46,8 @@ export function LoginModal({
           height="512px"
           src={
             colorMode === 'light'
-              ? '/images/login_white.jpeg'
-              : '/images/login.jpeg'
+              ? '/images/login-white.jpg'
+              : '/images/login.jpg'
           }
           alt="login-image"
         />

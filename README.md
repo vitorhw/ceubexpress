@@ -1,3 +1,3 @@
-![logo](./public/images/logo.png)
+<img src="./images/logo.png" alt="logo" width="100%"/>
 
-Em breve
+# Em breve

@@ -20,15 +20,13 @@
   - [ReactJS](#react)
   - [NodeJS](#node)
 
-## Installation
-
 ## Information
 This is part of a final paper for a Software Engineering class in the University Center of Brasilia. The group is composed by Vitor, Thalles, Vinicius and Wallace.
 
 #### [Try out our live demo](#https://)
 <img src="./public/images/preview.png" alt="page preview" title="Ceubexpress" align="center" />
 
-
+## Installation
 
 ## Development
 ### Database

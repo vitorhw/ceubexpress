@@ -22,7 +22,7 @@ export function ProfilePopover({ name }) {
         <PopoverHeader fontWeight="semibold">{name}</PopoverHeader>
         <PopoverArrow />
         <PopoverBody>
-          <p>Conta</p>
+          <p>Compras</p>
           <p>Favoritos</p>
           <p>Sobre</p>
         </PopoverBody>

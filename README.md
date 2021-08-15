@@ -2,7 +2,7 @@
     <img src="./public/images/logo.png" alt="Ceubexpress logo" title="Ceubexpress" align="right" height="60" />
 </a>
 
-# CEUBEXPRESS React Marketplace
+# CEUBEXPRESS Marketplace
 
 ![License](https://badgen.net/badge/license/MIT/blue)
 ![Version](https://badgen.net/badge/development/v0.0.0/yellow)

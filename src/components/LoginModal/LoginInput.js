@@ -5,14 +5,19 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  IconButton,
+  useColorMode,
+  Icon,
   VStack,
 } from '@chakra-ui/react';
+import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useState } from 'react';
 
 
 export function LoginInput() {
   const [show, setShow] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
+  const {colorMode, toggleColorMode} = useColorMode();
 
   const handleClick = () => setShow(!show);
   
@@ -26,7 +31,7 @@ export function LoginInput() {
       align="center"
       alignSelf="center"
       boxSize="50%"
-      border="1px solid rgba(0, 0, 0, 0.1)"
+      border={colorMode === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)' } 
       p="6"
       rounded="md"
     >
@@ -41,10 +46,13 @@ export function LoginInput() {
           type={show ? 'text' : 'password'}
           placeholder="Senha"
         />
-        <InputRightElement width="5.5rem">
-          <Button h="1.75rem" size="sm" onClick={handleClick}>
-            {show ? 'Esconder' : 'Mostrar'}
-          </Button>
+        <InputRightElement width="3rem">
+          <IconButton 
+            h="1.75rem" 
+            size="sm" 
+            icon={<Icon as={show ? RiEyeLine : RiEyeCloseLine} />}
+            onClick={handleClick} 
+          />
         </InputRightElement>
       </InputGroup>
 

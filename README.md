@@ -23,7 +23,6 @@
 ## Installation
 
 ## Information
-Test
 
 ## Development
 ### Database

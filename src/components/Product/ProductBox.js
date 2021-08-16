@@ -8,10 +8,16 @@ import {
   HStack,
   Box,
 } from '@chakra-ui/react';
-import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri'
+import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 
-
-export function ProductBox({ isFavourite = true }) {
+export function ProductBox({
+  isFavourite = true,
+  productBrand = 'Error',
+  productName = 'Error',
+  productPrice = 'Error',
+  productImage = 'Error',
+  productImageAlt = 'Error',
+}) {
   return (
     <Flex
       _hover={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}
@@ -23,43 +29,33 @@ export function ProductBox({ isFavourite = true }) {
       role="group"
       cursor="pointer"
     >
-      <VStack
-        alignItems="flex-start"
-        position="relative"
-      >
-        <Icon as={isFavourite ? RiStarFill : RiStarLine}
+      <VStack alignItems="flex-start" position="relative">
+        <Icon
+          as={isFavourite ? RiStarFill : RiStarLine}
           position="absolute"
           top="0.5rem"
           right="0.5rem"
           opacity="0.5"
-          color={isFavourite ? "yellow.400" : "gray.400"}
+          color={isFavourite ? 'yellow.400' : 'gray.400'}
           _hover={{ opacity: 1 }}
         />
         <Flex height="180px" overflow="hidden" align="center" p="1rem">
-          <Image 
+          <Image
             objectFit="cover"
-            src="./images/ipad.png" 
+            src={productImage}
+            alt={productImageAlt}
           />
         </Flex>
         <Box height="144px" p="1rem">
-          <Box
-            color="gray.400"
-            letterSpacing="wide"
-            fontSize="xs">
-            Brand
+          <Box color="gray.400" letterSpacing="wide" fontSize="xs">
+            {productBrand}
           </Box>
-          <Text 
-            fontSize="lg" 
-            noOfLines={2}>
-              Product NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct NameProduct Name
+          <Text fontSize="lg" noOfLines={2} mt={4}>
+            {productName}
           </Text>
-          <HStack
-            m="1rem 0"
-            fontWeight="bold"
-            color="#FF9737"
-          >
+          <HStack m="1rem 0" fontWeight="bold" color="#FF9737">
             <Text fontSize="sm">R$</Text>
-            <Text fontSize="2xl">1,200.00</Text>
+            <Text fontSize="2xl">{productPrice}</Text>
           </HStack>
         </Box>
         <Spacer />
@@ -77,7 +73,8 @@ export function ProductBox({ isFavourite = true }) {
             color="white"
             fontSize="1.5rem"
             transform="translateY(-25%)"
-            as={RiShoppingCart2Fill} />
+            as={RiShoppingCart2Fill}
+          />
         </Flex>
       </VStack>
     </Flex>

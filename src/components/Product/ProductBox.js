@@ -67,7 +67,7 @@ export function ProductBox({
           align="center"
           justify="center"
           p="1rem"
-          transition="width 0.3s ease"
+          transition="width 0.3s "
         >
           <Icon
             color="white"

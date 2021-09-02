@@ -1,26 +1,19 @@
-import { useState } from "react";
+import React from 'react';
 import { Header } from "./components/Header";
 import { LoginModal } from "./components/LoginModal";
 import { Product } from "./components/Product";
+import { WebProvider } from "./context/appContext";
+import { AuthProvider } from "./context/authContext";
 
 function App() {
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
-    function handleLoginClose() {
-      setIsLoginModalOpen(false);
-    }
-    
   return (
-    <>
-      <LoginModal
-        isLoginModalOpen={isLoginModalOpen}
-        setIsLoginModalOpen={setIsLoginModalOpen}
-        handleLoginClose={handleLoginClose}
-      />
-      <Header setIsLoginModalOpen={setIsLoginModalOpen} />
-
-      <Product />
-    </>
+    <AuthProvider>
+      <WebProvider>
+        <LoginModal />
+        <Header />
+        <Product />
+      </WebProvider>
+    </AuthProvider>
   );
 }
 

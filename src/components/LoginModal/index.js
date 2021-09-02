@@ -1,15 +1,16 @@
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Image, Flex, Spacer, Icon, useColorMode } from '@chakra-ui/react';
 import { LoginInput } from './LoginInput';
 import { RiCloseFill } from 'react-icons/ri';
+import { WebContext } from '../../context/appContext';
 
-export function LoginModal({
-  isLoginModalOpen,
-  setIsLoginModalOpen,
-  handleLoginClose,
-}) {
-  const { colorMode, toggleColorMode } = useColorMode();
+export function LoginModal() {
+  const { colorMode, } = useColorMode();
+  const {
+    isLoginModalOpen,
+    handleFunctionLoginModal
+  } = useContext(WebContext);
 
   const modalStyles = {
     overlay: {
@@ -34,7 +35,7 @@ export function LoginModal({
   return (
     <Modal
       isOpen={isLoginModalOpen}
-      onRequestClose={handleLoginClose}
+      onRequestClose={handleFunctionLoginModal}
       style={modalStyles}
       contentLabel="Modal"
     >
@@ -58,7 +59,7 @@ export function LoginModal({
           top="1rem"
           right="1rem"
           as={RiCloseFill}
-          onClick={handleLoginClose}
+          onClick={handleFunctionLoginModal}
         />
       </Flex>
     </Modal>

@@ -17,7 +17,7 @@ import { useState } from 'react';
 export function LoginInput() {
   const [show, setShow] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
-  const {colorMode, toggleColorMode} = useColorMode();
+  const {colorMode,} = useColorMode();
 
   const handleClick = () => setShow(!show);
   
@@ -28,6 +28,7 @@ export function LoginInput() {
   return (
     <VStack
       spacing="8"
+      h="auto"
       align="center"
       alignSelf="center"
       boxSize="50%"

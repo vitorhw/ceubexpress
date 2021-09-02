@@ -1,31 +1,11 @@
 import { Grid, Flex, Spinner } from '@chakra-ui/react';
 import { ProductBox } from './ProductBox';
-import Prismic from '@prismicio/client';
-import { useState, useEffect, React } from 'react';
+import { React, useContext } from 'react';
+import { AuthContext } from '../../context/authContext';
 
-export function Product({ product }) {
-  const [products, setProductsData] = useState('');
+export function Product() {
 
-  const Client = Prismic.client(process.env.REACT_APP_PRISMIC_END_POINT, {
-    accessToken: process.env.REACT_APP_PRISMIC_ACCESS_TOKEN,
-  });
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await Client.query(
-        Prismic.Predicates.at('document.type', 'products')
-      );
-      if (response) {
-        setProductsData(response.results);
-      }
-    };
-    fetchData();
-  }, []);
-
-  console.log(':', products);
-
-  if (product === null) {
-    console.log('NULL');
-  }
+  const {products} = useContext(AuthContext);
 
   return (
     <Flex w="100%" justify="center" mt="4rem">

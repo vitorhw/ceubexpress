@@ -7,17 +7,22 @@ import {
   IconButton,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { RiMoonClearLine } from 'react-icons/ri';
+import { WebContext } from '../../context/appContext';
 import { LoginIcon } from '../Icons/LoginIcon';
 import { LoginModal } from '../LoginModal';
 import { CartPopover } from './CartPopover';
 import { ProfilePopover } from './ProfilePopover';
 
-export function Header({ setIsLoginModalOpen }) {
+export function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [ isCartItem, setCartItem ] = useState(true);
   const [ isAuthenticated, setIsAuthenticated ] = useState(false);
+
+  const {
+    handleFunctionLoginModal
+  } = useContext(WebContext);
 
   const isSmallVersion = useBreakpointValue({
     base: false,
@@ -55,7 +60,7 @@ export function Header({ setIsLoginModalOpen }) {
                 aria-label="login button"
                 isRound="true"
                   icon={<LoginIcon transform={'translateY(1px)'} />}
-                onClick={setIsLoginModalOpen}
+                onClick={handleFunctionLoginModal}
               /> 
             )}
           </HStack>

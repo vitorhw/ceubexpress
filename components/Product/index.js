@@ -9,23 +9,22 @@ export function Product({ product }) {
   const Client = Prismic.client(process.env.REACT_APP_PRISMIC_END_POINT, {
     accessToken: process.env.REACT_APP_PRISMIC_ACCESS_TOKEN,
   });
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await Client.query(
-        Prismic.Predicates.at('document.type', 'products')
-      );
-      if (response) {
-        setProductsData(response.results);
-      }
-    };
-    fetchData();
-  }, []);
 
-  console.log(':', products);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await Client.query(
+  //       Prismic.Predicates.at('document.type', 'products')
+  //     );
+  //     if (response) {
+  //       setProductsData(response.results);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
-  if (product === null) {
-    console.log('NULL');
-  }
+  // if (product === null) {
+  //   console.log('NULL');
+  // }
 
   return (
     <Flex w="100%" justify="center" mt="4rem">
@@ -40,6 +39,7 @@ export function Product({ product }) {
         ) : (
           products.map((product) => (
             <ProductBox
+              key={product.data.id}
               isFavourite={true}
               productBrand={product.data.product_brand[0].text}
               productName={product.data.product_name[0].text}

@@ -10,7 +10,7 @@ import {
 import { useState } from 'react';
 import { RiMoonClearLine } from 'react-icons/ri';
 import { LoginIcon } from './LoginIcon';
-import { CartPopover } from './CartPopover';
+import { CartDrawer } from './CartDrawer';
 import { ProfilePopover } from './ProfilePopover';
 
 export function Header({ setIsLoginModalOpen }) {
@@ -43,7 +43,7 @@ export function Header({ setIsLoginModalOpen }) {
                 <Icon as={RiMoonClearLine} fontSize="1.5rem" />
               </Box>
             )}
-            <CartPopover isCartItem={isCartItem} />
+            <CartDrawer isCartItem={isCartItem} />
             {isAuthenticated ? (
               <ProfilePopover name={'John Doe'} />
             ) : (

@@ -16,7 +16,6 @@ export function Product({
   productName = 'Error',
   productPrice = 'Error',
   productImage = 'Error',
-  productImageAlt = 'Error',
 }) {
   return (
     <Flex
@@ -43,7 +42,7 @@ export function Product({
           <Image
             objectFit="cover"
             src={productImage}
-            alt={productImageAlt}
+            alt="produto"
           />
         </Flex>
         <Box height="144px" p="1rem">

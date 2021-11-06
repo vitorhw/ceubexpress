@@ -1,5 +1,5 @@
 <a href="#">
-    <img src="./public/images/logo.png" alt="Ceubexpress logo" title="Ceubexpress" align="right" height="60" />
+    <img src="./public/logo.png" alt="logo" title="Ceubexpress" align="right" height="60" />
 </a>
 
 # CEUBEXPRESS Marketplace
@@ -24,7 +24,7 @@
 This is part of a final paper for a Software Engineering class in the University Center of Brasilia. The group is composed by Vitor, Thalles, Vinicius and Wallace.
 
 #### [Try out our live demo](#https://)
-<img src="./public/images/preview.png" alt="page preview" title="Ceubexpress" align="center" />
+<img src="./public/preview.png" alt="page preview" title="Ceubexpress" align="center" />
 
 ## Installation
 

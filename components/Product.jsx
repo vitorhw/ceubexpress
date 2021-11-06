@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 
-export function ProductBox({
+export function Product({
   isFavourite = true,
   productBrand = 'Error',
   productName = 'Error',

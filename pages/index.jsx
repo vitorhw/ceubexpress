@@ -1,9 +1,9 @@
 import { Header } from "../components/Header";
 import { LoginModal } from "../components/LoginModal";
-import { Product } from "../components/Product";
+import { ProductList } from "../components/ProductList";
 import { useState } from "react"
 
-function index() {
+function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   function handleLoginClose() {
@@ -19,9 +19,9 @@ function index() {
       />
       <Header setIsLoginModalOpen={setIsLoginModalOpen} />
 
-      <Product />
+      <ProductList />
     </>
   )
 }
 
-export default index
+export default Home

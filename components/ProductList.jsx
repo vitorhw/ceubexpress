@@ -1,30 +1,31 @@
 import { Grid, Flex, Spinner } from '@chakra-ui/react';
-import { ProductBox } from './ProductBox';
+import { Product } from './Product';
 import Prismic from '@prismicio/client';
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect } from 'react';
+import { Client } from '../services/prismicHelpers'
 
-export function Product({ product }) {
-  const [products, setProductsData] = useState('');
+export function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [skip, setSkip] = useState(0);
+  const pageSize = 1;
 
-  const Client = Prismic.client(process.env.REACT_APP_PRISMIC_END_POINT, {
-    accessToken: process.env.REACT_APP_PRISMIC_ACCESS_TOKEN,
-  });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await Client.query(
-  //       Prismic.Predicates.at('document.type', 'products')
-  //     );
-  //     if (response) {
-  //       setProductsData(response.results);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await Client().query(
+        Prismic.Predicates.at('document.type', 'product'),
+        {
+          orderings: ['publication.title', 'publication.content'],
+          pageSize: pageSize,
+          after: skip,
+        }
+      );
+      setProducts(...products, ...response.results);
+      setSkip(skip + pageSize);
+    };
 
-  // if (product === null) {
-  //   console.log('NULL');
-  // }
+    fetchProducts();
+  }, [])
 
   return (
     <Flex w="100%" justify="center" mt="4rem">
@@ -38,8 +39,7 @@ export function Product({ product }) {
           </Flex>
         ) : (
           products.map((product) => (
-            <ProductBox
-              key={product.data.id}
+            <Product
               isFavourite={true}
               productBrand={product.data.product_brand[0].text}
               productName={product.data.product_name[0].text}

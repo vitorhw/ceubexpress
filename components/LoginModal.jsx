@@ -1,5 +1,4 @@
 import Modal from 'react-modal';
-import { useState } from 'react';
 import { Image, Flex, Spacer, Icon, useColorMode } from '@chakra-ui/react';
 import { LoginInput } from './LoginInput';
 import { RiCloseFill } from 'react-icons/ri';

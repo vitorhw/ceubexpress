@@ -17,18 +17,22 @@ export function Product({
   productPrice = 'Error',
   productImage = 'Error',
 }) {
+  const formattedPrice = new Intl.NumberFormat('pt-BR', {
+    minimumFractionDigits: 2,
+  }).format(productPrice);
+
   return (
     <Flex
       _hover={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}
       direction="column"
-      width="240px"
-      height="400px"
-      border="0.5px solid rgba(196, 196, 196, 0.3)"
-      overflow="hidden"
+      align="center"
+      width="100%"
       role="group"
       cursor="pointer"
     >
-      <VStack alignItems="flex-start" position="relative">
+      <Box
+        position="relative"
+      >
         <Icon
           as={isFavourite ? RiStarFill : RiStarLine}
           position="absolute"
@@ -38,43 +42,54 @@ export function Product({
           color={isFavourite ? 'yellow.400' : 'gray.400'}
           _hover={{ opacity: 1 }}
         />
-        <Flex height="180px" overflow="hidden" align="center" p="1rem">
-          <Image
-            objectFit="cover"
-            src={productImage}
-            alt="produto"
-          />
-        </Flex>
-        <Box height="144px" p="1rem">
-          <Box color="gray.400" letterSpacing="wide" fontSize="xs">
-            {productBrand}
+        <Image
+          objectFit="cover"
+          overflow="hidden"
+          w="100%"
+          maxW={{ lg: "240px" }}
+          src={productImage}
+          alt="produto"
+        />
+      </Box>
+      <VStack
+        border="0.5px solid rgba(196, 196, 196, 0.3)"
+        w={{ sm: "100%", lg: "240px" }}
+        alignItems="flex-start"
+        borderTopWidth="0"
+      >
+        <VStack alignItems="flex-start" w="100%">
+          <Box h="98px" p="1rem">
+            <Box color="gray.400" noOfLines={1} letterSpacing="wide" fontSize="xs">
+              {productBrand}
+            </Box>
+            <Text fontSize="lg" noOfLines={2} mt={2}>
+              {productName}
+            </Text>
           </Box>
-          <Text fontSize="lg" noOfLines={2} mt={4}>
-            {productName}
-          </Text>
-          <HStack m="1rem 0" fontWeight="bold" color="#FF9737">
+          <Spacer />
+          <HStack p="1rem" fontWeight="bold" color="#FF9737">
             <Text fontSize="sm">R$</Text>
-            <Text fontSize="2xl">{productPrice}</Text>
+            <Text fontSize="2xl">{formattedPrice}</Text>
           </HStack>
-        </Box>
-        <Spacer />
-        <Flex
-          _groupHover={{ opacity: 1, width: '100%' }}
-          opacity="0"
-          background="#FF9737"
-          width="0px"
-          align="center"
-          justify="center"
-          p="1rem"
-          transition="width 0.3s ease"
-        >
-          <Icon
-            color="white"
-            fontSize="1.5rem"
-            transform="translateY(-25%)"
-            as={RiShoppingCart2Fill}
-          />
-        </Flex>
+          <Flex
+            _groupHover={{ opacity: 1, width: '100%' }}
+            opacity={{ sm: 1, lg: 0 }}
+            h="100%"
+            maxH="48px"
+            width={{ sm: "100%", lg: "0px" }}
+            background="#FF9737"
+            align="center"
+            justify="center"
+            p="1rem"
+            transition="width 0.3s ease"
+          >
+            <Icon
+              color="white"
+              fontSize="1.5rem"
+              as={RiShoppingCart2Fill}
+            />
+          </Flex>
+        </VStack>
       </VStack>
     </Flex>
   );

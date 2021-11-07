@@ -6,6 +6,7 @@ import {
   Icon,
   IconButton,
   useBreakpointValue,
+  Spacer,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { RiMoonClearLine } from 'react-icons/ri';
@@ -26,8 +27,8 @@ export function Header({ setIsLoginModalOpen }) {
 
   return (
     <>
-      <Flex as="header" w="100%" pt="8" justify="center" h="10vh">
-        <HStack spacing="80">
+      <Flex as="header" w="100%" pt="8" px={{ sm: "4" }} justify="center" h="10vh">
+        <HStack spacing={{ lg: "80" }} w={{ sm: "100%", lg: "auto" }}>
           {!isSmallVersion && (
             <Box as="button" onClick={toggleColorMode}>
               <Icon as={RiMoonClearLine} fontSize="1.5rem" />
@@ -36,7 +37,7 @@ export function Header({ setIsLoginModalOpen }) {
           <Box as="h1" fontSize="2rem">
             ceubexpress
           </Box>
-
+          {isSmallVersion && <Spacer />}
           <HStack spacing="2">
             {isSmallVersion && (
               <Box as="button" onClick={toggleColorMode}>

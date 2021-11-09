@@ -20,7 +20,7 @@ export function Header({ setIsLoginModalOpen }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const isSmallVersion = useBreakpointValue({
-    base: false,
+    base: true,
     sm: true,
     lg: false
   });

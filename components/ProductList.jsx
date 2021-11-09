@@ -22,7 +22,6 @@ export function ProductList() {
     setProducts(prods);
   }, []);
 
-
   return (
     <Flex w="100%" justify="center" mt="4rem">
       <Grid

@@ -17,25 +17,17 @@ import {
 import { RiShoppingCart2Line } from 'react-icons/ri';
 import { CartItem } from './CartItem';
 import { useState, useEffect } from 'react';
-import faker from 'faker'
+import { useCart } from "react-use-cart";
 
 export function CartDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
+  const { items, cartTotal, isEmpty } = useCart();
 
-  useEffect(() => {
-    const prods = [...Array(20)].map((_, i) => ({
-      id: i,
-      isFavourite: faker.random.boolean(),
-      brand: faker.commerce.department(),
-      name: faker.commerce.productName(),
-      price: faker.commerce.price(),
-      image: faker.image.image()
-    }));
-
-    setProducts(prods);
-  }, []);
+  const formattedTotal = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(cartTotal);
 
   return (
     <>
@@ -50,16 +42,17 @@ export function CartDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader fontWeight="semibold">
-            Carrinho de compras
+            Carrinho
             <DrawerCloseButton />
           </DrawerHeader>
           <DrawerBody>
-            {!products ? (
+            {isEmpty ? (
               <Text>Nenhum item adicionado :(</Text>
             ) : (
-              products.map(product => (
+              items.map(product => (
                 <CartItem
                   key={product.id}
+                  id={product.id}
                   productBrand={product.brand}
                   productName={product.name}
                   productPrice={product.price}
@@ -70,9 +63,10 @@ export function CartDrawer() {
           </DrawerBody>
           <DrawerFooter>
             <HStack>
-              <Text>Total: R$ 0,00</Text>
+              <Text>Total: {formattedTotal}</Text>
               <Spacer />
               <Button
+                disabled={isEmpty}
                 colorScheme="pink"
                 variant="solid"
                 isLoading={loading}

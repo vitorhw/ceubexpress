@@ -9,8 +9,10 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
+import { useCart } from "react-use-cart";
 
 export function Product({
+  id,
   isFavourite = true,
   productBrand = 'Error',
   productName = 'Error',
@@ -20,6 +22,17 @@ export function Product({
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits: 2,
   }).format(productPrice);
+  const { addItem } = useCart();
+
+  function handleAddProduct(productId) {
+    addItem({
+      id: String(productId),
+      price: productPrice,
+      image: productImage,
+      name: productName,
+      brand: productBrand,
+    });
+  }
 
   return (
     <Flex
@@ -29,6 +42,7 @@ export function Product({
       width="100%"
       role="group"
       cursor="pointer"
+      onClick={() => handleAddProduct(id)}
     >
       <Box
         position="relative"
@@ -53,7 +67,7 @@ export function Product({
       </Box>
       <VStack
         border="0.5px solid rgba(196, 196, 196, 0.3)"
-        w={{ sm: "100%", lg: "240px" }}
+        w={{ base: "100%", lg: "240px" }}
         alignItems="flex-start"
         borderTopWidth="0"
       >
@@ -73,10 +87,10 @@ export function Product({
           </HStack>
           <Flex
             _groupHover={{ opacity: 1, width: '100%' }}
-            opacity={{ sm: 1, lg: 0 }}
+            opacity={{ base: 1, lg: 0 }}
             h="100%"
             maxH="48px"
-            width={{ sm: "100%", lg: "0px" }}
+            width={{ base: "100%", lg: "0px" }}
             background="#FF9737"
             align="center"
             justify="center"

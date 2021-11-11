@@ -7,8 +7,10 @@ import {
   IconButton
 } from '@chakra-ui/react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
+import { useCart } from "react-use-cart";
 
 export function CartItem({
+  id,
   productBrand = 'Error',
   productName = 'Error',
   productPrice = 'Error',
@@ -18,6 +20,11 @@ export function CartItem({
     style: 'currency',
     currency: 'BRL',
   }).format(productPrice);
+  const { removeItem } = useCart();
+
+  function handleRemoveProduct(productId) {
+    removeItem(String(productId));
+  }
 
   return (
     <HStack
@@ -25,8 +32,9 @@ export function CartItem({
       align="center"
       border="0.5px solid rgba(196, 196, 196, 0.3)"
       p="2"
-      mb="1"
+      mb="2"
       position="relative"
+      onClick={() => handleRemoveProduct(id)}
     >
       <IconButton
         aria-label="excluir"
@@ -36,6 +44,7 @@ export function CartItem({
         bottom="0"
         right="0"
         size="xs"
+        color="gray.200"
       />
       <Img
         src={productImage}

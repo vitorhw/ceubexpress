@@ -32,6 +32,7 @@ export function ProductList() {
           <Skeleton isLoaded={!loading}>
             <Product
               key={product.id}
+              id={product.id}
               isFavourite={product.isFavourite}
               productBrand={product.brand}
               productName={product.name}

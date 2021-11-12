@@ -7,6 +7,7 @@ import {
   VStack,
   HStack,
   Box,
+  useToast
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 import { useCart } from "react-use-cart";
@@ -22,15 +23,32 @@ export function Product({
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits: 2,
   }).format(productPrice);
-  const { addItem } = useCart();
+  const { addItem, inCart } = useCart();
+  const toast = useToast()
 
   function handleAddProduct(productId) {
+    if (inCart(String(productId))) {
+      toast({
+        title: 'Produto já adicionado',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      })
+
+      return;
+    }
     addItem({
       id: String(productId),
       price: productPrice,
       image: productImage,
       name: productName,
       brand: productBrand,
+    });
+    toast({
+      title: 'Produto adicionado ao carrinho',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
     });
   }
 

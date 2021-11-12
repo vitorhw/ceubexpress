@@ -4,7 +4,7 @@ import {
   Img,
   HStack,
   Spacer,
-  IconButton
+  IconButton,
 } from '@chakra-ui/react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { useCart } from "react-use-cart";
@@ -34,7 +34,6 @@ export function CartItem({
       p="2"
       mb="2"
       position="relative"
-      onClick={() => handleRemoveProduct(id)}
     >
       <IconButton
         aria-label="excluir"
@@ -45,6 +44,7 @@ export function CartItem({
         right="0"
         size="xs"
         color="gray.200"
+        onClick={() => { handleRemoveProduct(id) }}
       />
       <Img
         src={productImage}

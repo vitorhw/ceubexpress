@@ -13,6 +13,7 @@ import { RiMoonClearLine } from 'react-icons/ri';
 import { LoginIcon } from './LoginIcon';
 import { CartDrawer } from './CartDrawer';
 import { ProfilePopover } from './ProfilePopover';
+import Link from 'next/link';
 
 export function Header({ setIsLoginModalOpen }) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -34,9 +35,11 @@ export function Header({ setIsLoginModalOpen }) {
               <Icon as={RiMoonClearLine} fontSize="1.5rem" />
             </Box>
           )}
-          <Box as="h1" fontSize="2rem">
-            {isSmallVersion ? "ex" : "ceubexpress"}
-          </Box>
+          <Link href="/">
+            <Box as="h1" fontSize="2rem" cursor="pointer">
+              {isSmallVersion ? "ex" : "ceubexpress"}
+            </Box>
+          </Link>
           {isSmallVersion && <Spacer />}
           <HStack spacing="2">
             {isSmallVersion && (

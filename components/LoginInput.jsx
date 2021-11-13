@@ -12,15 +12,16 @@ import {
 } from '@chakra-ui/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useState } from 'react';
+import Link from 'next/link'
 
 
-export function LoginInput() {
+export function LoginInput({ handleLoginClose }) {
   const [show, setShow] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
-  const {colorMode, toggleColorMode} = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const handleClick = () => setShow(!show);
-  
+
   function handleLogin() {
     setIsLogging(true)
   }
@@ -31,7 +32,7 @@ export function LoginInput() {
       align="center"
       alignSelf="center"
       boxSize="50%"
-      border={colorMode === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)' } 
+      border={colorMode === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)'}
       p="6"
       rounded="md"
     >
@@ -47,11 +48,11 @@ export function LoginInput() {
           placeholder="Senha"
         />
         <InputRightElement width="3rem">
-          <IconButton 
-            h="1.75rem" 
-            size="sm" 
+          <IconButton
+            h="1.75rem"
+            size="sm"
             icon={<Icon as={show ? RiEyeLine : RiEyeCloseLine} />}
-            onClick={handleClick} 
+            onClick={handleClick}
           />
         </InputRightElement>
       </InputGroup>
@@ -62,9 +63,11 @@ export function LoginInput() {
 
       <Box as="HStack" align="center">
         <Text>Não possui cadastro?</Text>
-        <Box as="button" variant="unstyled" color="#66b3ff">
-          Clique aqui!
-        </Box>
+        <Link href="register">
+          <Button variant="link" color="#66b3ff" onClick={handleLoginClose}>
+            Clique aqui!
+          </Button>
+        </Link>
       </Box>
     </VStack>
   );

@@ -39,7 +39,7 @@ export function LoginModal({
     >
       <Flex>
         <Spacer />
-        <LoginInput />
+        <LoginInput handleLoginClose={handleLoginClose} />
         <Spacer />
         <Image
           height="512px"

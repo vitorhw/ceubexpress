@@ -67,7 +67,7 @@ export default function Register() {
                   src={avatar.avatar}
                   size={useBreakpointValue({ base: 'md', md: 'lg' })}
                   position={'relative'}
-                  zIndex={2}
+                  zIndex={0}
                   _before={{
                     content: '""',
                     width: 'full',
@@ -89,7 +89,7 @@ export default function Register() {
             <Avatar
               size={useBreakpointValue({ base: 'md', md: 'lg' })}
               position={'relative'}
-              zIndex={2}
+              zIndex={0}
               _before={{
                 content: '""',
                 width: 'full',

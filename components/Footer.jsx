@@ -7,7 +7,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaChartArea, FaGithub } from 'react-icons/fa';
 
 const SocialButton = ({
   children,
@@ -49,16 +49,13 @@ export function Footer() {
         spacing={4}
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
-        <Text>CEUBEXPRESS. Projeto de Engenharia de Software do UniCEUB</Text>
+        <Text>Projeto de Engenharia de Software do UniCEUB</Text>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'Twitter'} href={'#'}>
-            <FaTwitter />
+          <SocialButton label={'GitHub'} href={'https://github.com/vitorhw/ceubexpress'}>
+            <FaGithub />
           </SocialButton>
-          <SocialButton label={'YouTube'} href={'#'}>
-            <FaYoutube />
-          </SocialButton>
-          <SocialButton label={'Instagram'} href={'#'}>
-            <FaInstagram />
+          <SocialButton label={'YouTube'} href={'https://app.splitbee.io/public/uniceubexpress.vercel.app'}>
+            <FaChartArea />
           </SocialButton>
         </Stack>
       </Container>

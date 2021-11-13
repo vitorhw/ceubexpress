@@ -26,7 +26,7 @@ function Purchases() {
     {
       id: '2',
       name: 'Product 2',
-      price: '$100',
+      price: 'R$100,00',
       image: 'https://picsum.photos/200',
     },
     {
@@ -40,20 +40,20 @@ function Purchases() {
     {
       id: '1',
       status: 'Pendente',
-      date: '2020-01-01',
-      total: '$100'
+      date: '20 de Outubro de 2021',
+      total: 'R$100,00'
     },
     {
       id: '2',
       status: 'Completo',
-      date: '2020-01-01',
-      total: '$100'
+      date: '20 de Outubro de 2021',
+      total: 'R$100,00'
     },
     {
       id: '1',
       status: 'Cancelado',
-      date: '2020-01-01',
-      total: '$100'
+      date: '20 de Outubro de 2021',
+      total: 'R$100,00'
     }
   ]
 
@@ -63,7 +63,7 @@ function Purchases() {
       mx="auto"
       my="8"
     >
-      <Center
+      {/* <Center
         color="gray.400"
         display="flex"
         h="80vh"
@@ -72,7 +72,7 @@ function Purchases() {
       >
         <RiShoppingCart2Line />
         <Text ml="2">faça sua primeira compra</Text>
-      </Center>
+      </Center> */}
       {purchases.map(purchase => (
         <Flex
           w="100%"
@@ -85,15 +85,6 @@ function Purchases() {
           mb={4}
           flexDirection={isSmallVersion ? "column" : "row"}
         >
-          <Text
-            px="3"
-            py="1"
-            bgColor={purchase.status === 'Pendente' ? 'yellow.500' : (purchase.status === 'Completo' ? 'green.500' : 'red.500')}
-            borderRadius="md"
-            color="white"
-          >
-            {purchase.status}
-          </Text>
           <Box>
             {products.map(product => (
               <HStack
@@ -120,16 +111,27 @@ function Purchases() {
           </Box>
           <Box>
             <Text
+              px="3"
+              py="1"
+              bgColor={purchase.status === 'Pendente' ? 'yellow.500' : (purchase.status === 'Completo' ? 'green.500' : 'red.500')}
+              borderRadius="md"
+              color="white"
+              mb={4}
+              mt={isSmallVersion ? 4 : 0}
+            >
+              {purchase.status}
+            </Text>
+            <Text
               fontWeight="bold"
               fontSize="xl"
             >
-              Total: 123,93
+              {purchase.total}
             </Text>
             <Text
               fontSize="sm"
               color="gray.600"
             >
-              1 de Setembro de 2021
+              {purchase.date}
             </Text>
           </Box>
         </Flex>

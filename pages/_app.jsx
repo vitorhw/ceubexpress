@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }) {
           draggable
           pauseOnHover={false}
         />
-        <Box minHeight="80vh">
+        <Box minHeight="100vh">
           <Component {...pageProps} />
         </Box>
         <Footer />

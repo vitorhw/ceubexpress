@@ -32,7 +32,7 @@ function Favourites() {
 
   return (
     <>
-      <Center
+      {/* <Center
         color="gray.400"
         display="flex"
         h="80vh"
@@ -41,7 +41,7 @@ function Favourites() {
       >
         <RiStarLine />
         <Text ml="2">faça seu primeiro favorito</Text>
-      </Center>
+      </Center> */}
       <ProductList products={products} loading={loading} />
     </>
   )

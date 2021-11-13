@@ -30,7 +30,7 @@ export function CartItem({
     <HStack
       maxW="100%"
       align="center"
-      border="0.5px solid rgba(196, 196, 196, 0.3)"
+      bgColor="rgba(196, 196, 196, 0.3)"
       p="2"
       mb="2"
       position="relative"

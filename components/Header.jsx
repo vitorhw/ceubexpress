@@ -47,7 +47,7 @@ export function Header({ setIsLoginModalOpen }) {
                 <Icon as={RiMoonClearLine} fontSize="1.5rem" />
               </Box>
             )}
-            <CartDrawer />
+            <CartDrawer setIsLoginModalOpen={setIsLoginModalOpen} />
             {isAuthenticated ? (
               <ProfilePopover name={'John Doe'} />
             ) : (

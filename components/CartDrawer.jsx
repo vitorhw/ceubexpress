@@ -20,15 +20,25 @@ import { CartItem } from './CartItem';
 import { useState } from 'react';
 import { useCart } from "react-use-cart";
 
-export function CartDrawer() {
+export function CartDrawer({ setIsLoginModalOpen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const { items, cartTotal, isEmpty, totalUniqueItems } = useCart();
+  const session = false
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(cartTotal);
+
+  function handleBuy() {
+    if (session) {
+      return
+    }
+
+    setIsLoginModalOpen(true);
+    onClose();
+  }
 
 
   return (
@@ -67,7 +77,7 @@ export function CartDrawer() {
           </DrawerHeader>
           <DrawerBody>
             {isEmpty ? (
-              <Text>Nenhum item adicionado :(</Text>
+              <Text>Está meio vazio aqui :(</Text>
             ) : (
               items.map(product => (
                 <CartItem
@@ -90,6 +100,7 @@ export function CartDrawer() {
                 colorScheme="pink"
                 variant="solid"
                 isLoading={loading}
+                onClick={handleBuy}
               >
                 Pagar agora
               </Button>

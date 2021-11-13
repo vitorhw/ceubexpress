@@ -34,7 +34,6 @@ export function Product({
         duration: 5000,
         isClosable: true,
       })
-
       return;
     }
     addItem({

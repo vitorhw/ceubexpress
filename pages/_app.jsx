@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import { ToastContainer } from 'react-toastify';
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
+import { ChakraProvider, ColorModeScript, Box } from "@chakra-ui/react"
 import { Header } from "../components/Header";
 import { LoginModal } from "../components/LoginModal";
 import { useState } from "react"
+import { Footer } from "../components/Footer";
 
 import { CartProvider } from "react-use-cart";
 
@@ -41,7 +42,10 @@ function MyApp({ Component, pageProps }) {
           draggable
           pauseOnHover={false}
         />
-        <Component {...pageProps} />
+        <Box minHeight="80vh">
+          <Component {...pageProps} />
+        </Box>
+        <Footer />
       </CartProvider>
     </ChakraProvider>
   );

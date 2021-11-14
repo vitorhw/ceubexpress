@@ -10,8 +10,8 @@ export function PaginationItem({ isCurrent = false, number, onPageChange }) {
         colorScheme="pink"
         disabled
         _disabled={{
-          bgColor: 'pink.500',
-          cursor: 'default'
+          cursor: 'default',
+          bg: 'pink.400'
         }}
       >
         {number}
@@ -24,10 +24,7 @@ export function PaginationItem({ isCurrent = false, number, onPageChange }) {
       size="sm"
       fontSize="xs"
       width="4"
-      bg="gray.500"
-      _hover={{
-        bg: 'gray.400'
-      }}
+      colorScheme="pink"
       onClick={() => onPageChange(number)}
     >
       {number}

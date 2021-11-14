@@ -21,8 +21,6 @@ function MyApp({ Component, pageProps }) {
     setIsLoginModalOpen(false);
   }
 
-  console.log(router.pathname.startsWith('/dash'))
-
   return (
     <ChakraProvider theme={theme}>
       <CartProvider>

@@ -10,14 +10,13 @@ import {
   Tbody,
   Td,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
 import { useState } from 'react'
 import faker from 'faker'
 import { Pagination } from '../../../components/Pagination'
 
-export default function Users() {
+export default function Sales() {
   const [page, setPage] = useState(1);
   const isLoading = false
   const isFetching = false
@@ -39,7 +38,7 @@ export default function Users() {
     return {
       id: i,
       name,
-      email: faker.internet.email(name),
+      spent: faker.random.number({ min: 0, max: 1000 }).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
       createdAt: faker.date.past().toLocaleDateString('pt-BR', { day: 'numeric', month: 'numeric', year: 'numeric' }),
     }
   });
@@ -49,7 +48,7 @@ export default function Users() {
       <Box flex="1" borderRadius={8} p="8">
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="lg" fontWeight="normal">
-            Usuários
+            Vendas
 
             {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
           </Heading>
@@ -69,7 +68,8 @@ export default function Users() {
               <Thead>
                 <Tr>
                   <Th>Usuário</Th>
-                  <Th>Registro</Th>
+                  <Th>Total</Th>
+                  <Th>Data</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -79,9 +79,9 @@ export default function Users() {
                       <Td>
                         <Box>
                           <Text fontWeight="bold" color="pink.500">{user.name}</Text>
-                          <Text fontSize="sm" color="gray.300">{user.email}</Text>
                         </Box>
                       </Td>
+                      <Td>{user.spent}</Td>
                       <Td>{user.createdAt}</Td>
                     </Tr>
                   )

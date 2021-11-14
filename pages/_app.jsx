@@ -5,14 +5,17 @@ import { Header } from "../components/Header";
 import { LoginModal } from "../components/LoginModal";
 import { useState } from "react"
 import { Footer } from "../components/Footer";
+import { useRouter } from "next/router"
 
 import { CartProvider } from "react-use-cart";
 
 import theme from '../styles/theme';
 import 'react-toastify/dist/ReactToastify.css';
+import { Sidebar } from '../components/Sidebar';
 
 function MyApp({ Component, pageProps }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const router = useRouter();
 
   function handleLoginClose() {
     setIsLoginModalOpen(false);
@@ -29,7 +32,7 @@ function MyApp({ Component, pageProps }) {
           setIsLoginModalOpen={setIsLoginModalOpen}
           handleLoginClose={handleLoginClose}
         />
-        <Header setIsLoginModalOpen={setIsLoginModalOpen} />
+        {router.pathname !== '/dashboard' && <Header setIsLoginModalOpen={setIsLoginModalOpen} />}
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ToastContainer
           position="top-left"
@@ -42,7 +45,7 @@ function MyApp({ Component, pageProps }) {
           draggable
           pauseOnHover={false}
         />
-        <Box minHeight="100vh">
+        <Box minH="100vh">
           <Component {...pageProps} />
         </Box>
         <Footer />

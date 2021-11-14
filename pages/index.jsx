@@ -51,7 +51,8 @@ function Home() {
   return (
     <>
       <InputGroup
-        w="50%"
+        w="100%"
+        maxW="400px"
         justify="center"
         m="auto"
         mt="4rem"

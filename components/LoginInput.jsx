@@ -9,6 +9,7 @@ import {
   useColorMode,
   Icon,
   VStack,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useState } from 'react';
@@ -26,12 +27,19 @@ export function LoginInput({ handleLoginClose }) {
     setIsLogging(true)
   }
 
+  const isSmallVersion = useBreakpointValue({
+    base: true,
+    sm: true,
+    md: true,
+    lg: false
+  });
+
   return (
     <VStack
       spacing="8"
       align="center"
       alignSelf="center"
-      boxSize="50%"
+      boxSize={isSmallVersion ? "100%" : "50%"}
       border={colorMode === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)'}
       p="6"
       rounded="md"

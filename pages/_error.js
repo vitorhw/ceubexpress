@@ -1,7 +1,9 @@
 import { Box, Heading, Text, Button } from '@chakra-ui/react';
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 function Error({ statusCode }) {
+  const router = useRouter()
+
   return (
     <Box textAlign="center" py={60} px={6}>
       <Heading
@@ -18,15 +20,15 @@ function Error({ statusCode }) {
       <Text color={'gray.500'} mb={6}>
         Parece que não conseguimos encontrar o que estava procurando.
       </Text>
-      <Link href='/'>
-        <Button
-          colorScheme="teal"
-          bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
-          color="white"
-          variant="solid">
-          Voltar
-        </Button>
-      </Link>
+      <Button
+        colorScheme="teal"
+        bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
+        color="white"
+        variant="solid"
+        onClick={() => router.back()}
+      >
+        Voltar
+      </Button>
     </Box>
   )
 }

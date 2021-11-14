@@ -6,7 +6,7 @@ import { SidebarDrawerProvider } from '../contexts/SidebarDrawerContext'
 export function Dashboard({ children }) {
   return (
     <SidebarDrawerProvider>
-      <Flex direction="column" h="100vh">
+      <Flex direction="column" minH="100vh">
         <DashHeader />
         <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
           <Sidebar />

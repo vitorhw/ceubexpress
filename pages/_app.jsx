@@ -21,6 +21,8 @@ function MyApp({ Component, pageProps }) {
     setIsLoginModalOpen(false);
   }
 
+  console.log(router.pathname.startsWith('/dash'))
+
   return (
     <ChakraProvider theme={theme}>
       <CartProvider>
@@ -32,7 +34,7 @@ function MyApp({ Component, pageProps }) {
           setIsLoginModalOpen={setIsLoginModalOpen}
           handleLoginClose={handleLoginClose}
         />
-        {router.pathname !== '/dashboard' && <Header setIsLoginModalOpen={setIsLoginModalOpen} />}
+        {!router.pathname.startsWith('/dashboard') && <Header setIsLoginModalOpen={setIsLoginModalOpen} />}
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ToastContainer
           position="top-left"

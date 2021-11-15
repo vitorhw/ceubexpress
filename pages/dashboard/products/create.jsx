@@ -112,7 +112,7 @@ export default function Create() {
         <Flex mt="8" justify="flex-end">
           <HStack spacing="4">
             <Link href="/dashboard/products" passHref>
-              <Button colorScheme="whiteAlpha">Cancelar</Button>
+              <Button colorScheme="gray">Cancelar</Button>
             </Link>
             <Button
               type="submit"

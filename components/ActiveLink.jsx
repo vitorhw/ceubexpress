@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { cloneElement } from 'react'
 import { useRouter } from 'next/router'
 
-export function ActiveLink({ children, shouldMatchExactHref = false, ...rest }) {
+export function ActiveLink({ children, shouldMatchExactHref = true, ...rest }) {
   const { asPath } = useRouter();
 
   let isActive = false;

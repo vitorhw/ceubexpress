@@ -25,11 +25,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <CartProvider>
-          <GoogleReCaptchaProvider
-            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-          >
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+      >
+        <AuthProvider>
+          <CartProvider>
+
             <Head>
               <title>Ceubexpress</title>
             </Head>
@@ -57,9 +58,10 @@ function MyApp({ Component, pageProps }) {
               <Component {...pageProps} />
             </Box>
             <Footer />
-          </GoogleReCaptchaProvider>
-        </CartProvider>
-      </AuthProvider>
+
+          </CartProvider>
+        </AuthProvider>
+      </GoogleReCaptchaProvider>
     </ChakraProvider>
   );
 }

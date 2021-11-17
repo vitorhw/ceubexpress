@@ -18,38 +18,19 @@ import Link from 'next/link'
 import { AuthContext } from '../contexts/AuthContext'
 import { useForm } from 'react-hook-form'
 import Router from 'next/router'
-import {
-  useGoogleReCaptcha,
-} from 'react-google-recaptcha-v3';
-import axios from 'axios'
 
 
 export function LoginInput({ handleLoginClose }) {
   const [show, setShow] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const { handleSubmit, register } = useForm();
   const { signIn, user } = useContext(AuthContext);
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
 
   const handleClick = () => setShow(!show);
 
   async function handleSignIn(data) {
     setIsLogging(true);
-
-    const reCaptchaToken = await executeRecaptcha("SignIn");
-
-    const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}&response=${reCaptchaToken}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-        }
-      });
-
-    console.log(response.data)
-
     await signIn(data);
     setIsLogging(false);
   }

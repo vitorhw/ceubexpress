@@ -8,16 +8,17 @@ import {
   useBreakpointValue,
   Spacer,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { RiMoonClearLine } from 'react-icons/ri';
 import { LoginIcon } from './LoginIcon';
 import { CartDrawer } from './CartDrawer';
 import { ProfilePopover } from './ProfilePopover';
+import { AuthContext } from '../contexts/AuthContext';
 import Link from 'next/link';
 
 export function Header({ setIsLoginModalOpen }) {
+  const { isAuthenticated, user } = useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const isSmallVersion = useBreakpointValue({
     base: true,
@@ -49,7 +50,7 @@ export function Header({ setIsLoginModalOpen }) {
             )}
             <CartDrawer setIsLoginModalOpen={setIsLoginModalOpen} />
             {isAuthenticated ? (
-              <ProfilePopover name={'John Doe'} />
+              <ProfilePopover name={user.name} />
             ) : (
               <IconButton
                 fill={colorMode === 'light' ? "gray.800" : "gray.100"}

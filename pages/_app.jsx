@@ -6,12 +6,13 @@ import { LoginModal } from "../components/LoginModal";
 import { useState } from "react"
 import { Footer } from "../components/Footer";
 import { useRouter } from "next/router"
+import { AuthProvider } from "../contexts/AuthContext"
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import { CartProvider } from "react-use-cart";
 
 import theme from '../styles/theme';
 import 'react-toastify/dist/ReactToastify.css';
-import { Sidebar } from '../components/Sidebar';
 
 function MyApp({ Component, pageProps }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -23,33 +24,41 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <CartProvider>
-        <Head>
-          <title>Ceubexpress</title>
-        </Head>
-        <LoginModal
-          isLoginModalOpen={isLoginModalOpen}
-          setIsLoginModalOpen={setIsLoginModalOpen}
-          handleLoginClose={handleLoginClose}
-        />
-        {!router.pathname.startsWith('/dashboard') && <Header setIsLoginModalOpen={setIsLoginModalOpen} />}
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <ToastContainer
-          position="top-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={true}
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable
-          pauseOnHover={false}
-        />
-        <Box minH="100vh">
-          <Component {...pageProps} />
-        </Box>
-        <Footer />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          >
+            <Head>
+              <title>Ceubexpress</title>
+            </Head>
+            <LoginModal
+              isLoginModalOpen={isLoginModalOpen}
+              setIsLoginModalOpen={setIsLoginModalOpen}
+              handleLoginClose={handleLoginClose}
+            />
+            {!router.pathname.startsWith('/dashboard') &&
+              <Header setIsLoginModalOpen={setIsLoginModalOpen} />
+            }
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <ToastContainer
+              position="top-left"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={true}
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover={false}
+            />
+            <Box minH="100vh">
+              <Component {...pageProps} />
+            </Box>
+            <Footer />
+          </GoogleReCaptchaProvider>
+        </CartProvider>
+      </AuthProvider>
     </ChakraProvider>
   );
 }

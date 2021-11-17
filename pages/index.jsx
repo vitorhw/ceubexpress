@@ -5,6 +5,7 @@ import { RiMagicFill } from "react-icons/ri";
 import faker from 'faker';
 import debounce from 'lodash.debounce'
 
+
 faker.locale = "pt_BR"
 
 function Home() {
@@ -74,3 +75,5 @@ function Home() {
 }
 
 export default Home
+
+

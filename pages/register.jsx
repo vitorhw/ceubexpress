@@ -14,6 +14,7 @@ import * as yup from 'yup'
 import { Input } from "../components/Input";
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup.umd'
+import { parseCookies } from 'nookies'
 import faker from 'faker';
 
 const avatars = [...Array(5)].map((_, i) => ({
@@ -31,12 +32,14 @@ const createUserFormSchema = yup.object().shape({
   ], 'As senhas não conferem')
 })
 
-export default function Register() {
+export default function Register({ user }) {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema)
   })
 
   const { errors } = formState
+
+  console.log(user)
 
 
   const handleCreateUser = async (values) => {
@@ -158,4 +161,24 @@ export default function Register() {
       </Container>
     </Box >
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+
+  if (token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {
+
+    }
+  }
+
 }

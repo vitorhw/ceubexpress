@@ -10,7 +10,6 @@ import {
   Tbody,
   Td,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
 import { useState } from 'react'

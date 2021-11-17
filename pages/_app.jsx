@@ -20,6 +20,7 @@ function MyApp({ Component, pageProps }) {
 
   function handleLoginClose() {
     setIsLoginModalOpen(false);
+
   }
 
   return (

@@ -148,10 +148,18 @@ export const getServerSideProps = async (ctx) => {
   const { sub } = json;
   let data = [];
 
-  const response = await apiClient.get(`/favorites/${sub}`)
-  data = response.data.map((favorite) => {
-    return favorite.product.id
-  })
+  try {
+    const response = await apiClient.get(`/favorites/${sub}`)
+    data = response.data.map((favorite) => {
+      return favorite.product.id
+    })
+  } catch {
+    return {
+      props: {
+        favoriteList: [],
+      }
+    }
+  }
 
   return {
     props: {

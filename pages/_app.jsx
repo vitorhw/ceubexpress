@@ -12,6 +12,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { CartProvider } from "react-use-cart";
 
 import theme from '../styles/theme';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {

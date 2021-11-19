@@ -1,38 +1,34 @@
-import { ProductList } from "../components/ProductList";
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { RiStarLine } from 'react-icons/ri';
-import faker from 'faker';
-import { Box, Text, Center } from '@chakra-ui/react';
+import { Text, Center, Skeleton, Flex, Grid } from '@chakra-ui/react';
+import { parseCookies } from 'nookies'
+import { AuthContext } from '../contexts/AuthContext';
+import { api } from '../services/api';
+import { Product } from '../components/Product';
 
-faker.locale = "pt_BR"
 
 function Favourites() {
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const { user } = useContext(AuthContext);
 
-  function getProducts() {
-    setLoading(true);
-    const prods = [...Array(20)].map((_, i) => ({
-      id: i,
-      isFavourite: true,
-      brand: faker.commerce.department(),
-      name: faker.commerce.productName(),
-      price: faker.commerce.price(),
-      image: faker.image.image()
-    }));
+  async function retrieveFavourites() {
 
+    if (!user) {
+      return;
+    }
+    const response = await api.get(`/favorites/${user.id}`);
+    setFavorites(response.data);
     setLoading(false);
-    return prods
   }
 
   useEffect(() => {
-    const response = getProducts();
-    setProducts(response);
-  }, []);
+    retrieveFavourites();
+  }, [user]);
 
-  return (
-    <>
-      {/* <Center
+  if (favorites.length === 0) {
+    return (
+      <Center
         color="gray.400"
         display="flex"
         h="80vh"
@@ -41,10 +37,49 @@ function Favourites() {
       >
         <RiStarLine />
         <Text ml="2">faça seu primeiro favorito</Text>
-      </Center> */}
-      <ProductList products={products} loading={loading} />
-    </>
+      </Center>
+    )
+  }
+
+  return (
+    <Flex w="100%" justify="center" my="4rem">
+      <Grid
+        templateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(4, 1fr)' }}
+        gap={6}
+      >
+        {favorites.map(favorite => (
+          <Skeleton isLoaded={!loading}>
+            <Product
+              key={favorite.product.id}
+              id={favorite.product.id}
+              isFavourite={true}
+              productBrand={favorite.product.brand}
+              productName={favorite.product.name}
+              productPrice={favorite.product.price}
+              productImage={favorite.product.image}
+            />
+          </Skeleton>
+        ))}
+      </Grid>
+    </Flex>
   )
 }
 
 export default Favourites
+
+export const getServerSideProps = async (ctx) => {
+  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}

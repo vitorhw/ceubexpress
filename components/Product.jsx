@@ -61,33 +61,33 @@ export function Product({
       cursor="pointer"
       onClick={() => handleAddProduct(id)}
     >
-      <Box
-        position="relative"
-      >
-        <Icon
-          as={isFavourite ? RiStarFill : RiStarLine}
-          position="absolute"
-          top="0.5rem"
-          right="0.5rem"
-          opacity="0.5"
-          color={isFavourite ? 'yellow.400' : 'gray.400'}
-          _hover={{ opacity: 1 }}
-        />
-        <Image
-          objectFit="cover"
-          overflow="hidden"
-          w="100%"
-          maxW={{ lg: "240px" }}
-          src={productImage}
-          alt="produto"
-        />
-      </Box>
       <VStack
         border="0.5px solid rgba(196, 196, 196, 0.3)"
         w={{ base: "100%", lg: "240px" }}
         alignItems="flex-start"
-        borderTopWidth="0"
       >
+        <VStack
+          position="relative"
+          w="100%"
+        >
+          <Icon
+            as={isFavourite ? RiStarFill : RiStarLine}
+            position="absolute"
+            top="0.5rem"
+            right="0.5rem"
+            opacity="0.5"
+            color={isFavourite ? 'yellow.400' : 'gray.400'}
+            _hover={{ opacity: 1 }}
+          />
+          <Image
+            objectFit="cover"
+            overflow="hidden"
+            h="140px"
+            maxW={{ lg: "240px" }}
+            src={productImage}
+            alt="produto"
+          />
+        </VStack>
         <VStack alignItems="flex-start" w="100%">
           <Box h="98px" p="1rem">
             <Box color="gray.400" noOfLines={1} letterSpacing="wide" fontSize="xs">

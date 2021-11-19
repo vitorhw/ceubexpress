@@ -20,6 +20,9 @@ import { Pagination } from "../../../components/Pagination";
 import { useState } from 'react'
 import faker from 'faker'
 import Link from 'next/link'
+import { parseCookies } from 'nookies'
+
+import jwt from 'jsonwebtoken'
 
 export default function Products() {
   const [page, setPage] = useState(1);
@@ -117,4 +120,22 @@ export default function Products() {
       </Box>
     </Dashboard>
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const json = jwt.decode(token);
+
+  if (!json.role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

@@ -10,12 +10,17 @@ import {
   AvatarGroup,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import * as yup from 'yup'
 import { Input } from "../components/Input";
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup.umd'
 import { parseCookies } from 'nookies'
+import { api } from '../services/api';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext'
+
 import faker from 'faker';
+import * as yup from 'yup'
+
 
 const avatars = [...Array(5)].map((_, i) => ({
   id: i,
@@ -24,7 +29,7 @@ const avatars = [...Array(5)].map((_, i) => ({
 }))
 
 const createUserFormSchema = yup.object().shape({
-  name: yup.string().required('Nome é obrigatório').min(6, 'Nome deve ter no mínimo 6 caracteres'),
+  name: yup.string().required('Nome é obrigatório').min(3, 'Nome deve ter no mínimo 3 caracteres'),
   email: yup.string().required('Email é obrigatório').email('Email inválido'),
   password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve ter 6 caracteres no mínimo'),
   password_confirmation: yup.string().oneOf([
@@ -36,16 +41,29 @@ export default function Register({ user }) {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema)
   })
-
   const { errors } = formState
+  const [userCounter, setUserCounter] = useState(0)
+  const { signUp } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false)
 
-  console.log(user)
+  useEffect(() => {
+    async function getUserCount() {
+      const response = await api.get('/user/quantity')
+      setUserCounter(response.data.quantity)
+    }
 
+    getUserCount();
+  }, [])
 
   const handleCreateUser = async (values) => {
-    console.log(values)
+    setIsLoading(true)
+    signUp({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    })
+    setIsLoading(true)
   }
-
 
   return (
     <Box position={'relative'}>
@@ -59,7 +77,7 @@ export default function Register({ user }) {
           <Heading
             lineHeight={1.1}
             fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            Junte-se a 30 compradores!
+            Junte-se a {userCounter}+ compradores!
           </Heading>
           <Stack direction={'row'} spacing={4} align={'center'}>
             <AvatarGroup>
@@ -152,7 +170,7 @@ export default function Register({ user }) {
                 boxShadow: 'xl',
               }}
               type="submit"
-              isLoading={formState.isSubmitting}
+              isLoading={isLoading}
             >
               Registrar-se
             </Button>
@@ -176,9 +194,6 @@ export const getServerSideProps = async (ctx) => {
   }
 
   return {
-    props: {
-
-    }
+    props: {}
   }
-
 }

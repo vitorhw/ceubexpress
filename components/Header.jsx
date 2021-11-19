@@ -32,9 +32,9 @@ export function Header({ setIsLoginModalOpen }) {
       <Flex as="header" w="100%" pt="8" px={{ base: "4" }} justify="center" h="10vh">
         <HStack spacing={{ lg: "80" }} w={{ base: "100%", lg: "auto" }}>
           {!isSmallVersion && (
-            <Box as="button" onClick={toggleColorMode}>
+            <HStack as="button" onClick={toggleColorMode}>
               <Icon as={RiMoonClearLine} fontSize="1.5rem" />
-            </Box>
+            </HStack>
           )}
           <Link href="/">
             <Box as="h1" fontSize="2rem" cursor="pointer">
@@ -44,13 +44,13 @@ export function Header({ setIsLoginModalOpen }) {
           {isSmallVersion && <Spacer />}
           <HStack spacing="2">
             {isSmallVersion && (
-              <Box as="button" onClick={toggleColorMode}>
+              <HStack as="button" onClick={toggleColorMode}>
                 <Icon as={RiMoonClearLine} fontSize="1.5rem" />
-              </Box>
+              </HStack>
             )}
             <CartDrawer setIsLoginModalOpen={setIsLoginModalOpen} />
             {isAuthenticated ? (
-              <ProfilePopover name={user.name} />
+              <ProfilePopover />
             ) : (
               <IconButton
                 fill={colorMode === 'light' ? "gray.800" : "gray.100"}

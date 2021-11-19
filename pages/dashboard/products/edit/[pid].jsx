@@ -17,6 +17,9 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useRouter } from 'next/router'
 import { useDropzone } from 'react-dropzone';
 import { useMemo } from 'react';
+import { parseCookies } from 'nookies'
+
+import jwt from 'jsonwebtoken'
 
 const createUserFormSchema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório').min(6, 'Nome deve conter no mínimo 6 caracteres').max(30, 'Nome deve conter no máximo 60 caractes'),
@@ -128,4 +131,22 @@ export default function Edit() {
       </Box>
     </Dashboard >
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const json = jwt.decode(token);
+
+  if (!json.role) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

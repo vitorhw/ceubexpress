@@ -9,15 +9,15 @@ import {
   useColorMode,
   Icon,
   VStack,
-  useToast,
   useBreakpointValue
 } from '@chakra-ui/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-import { useState, useContext, useEffect, useCallback } from 'react';
-import Link from 'next/link'
+import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../contexts/AuthContext'
 import { useForm } from 'react-hook-form'
+
 import Router from 'next/router'
+import Link from 'next/link'
 
 
 export function LoginInput({ handleLoginClose }) {

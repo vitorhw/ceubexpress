@@ -1,7 +1,7 @@
 import { useToast, } from '@chakra-ui/react';
 import { createContext } from 'react';
 import { api } from '../services/api'
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import { useState, useEffect } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
@@ -50,6 +50,43 @@ export function AuthProvider({ children }) {
     return false
   }
 
+  async function signUp({ name, email, password }) {
+    const reCaptchaTokenSuccess = await verifyCaptcha("Register");
+
+    if (reCaptchaTokenSuccess) {
+      const response = await api.post('user', {
+        email,
+        password,
+        name,
+      }).catch((error) => {
+        if (error.response) {
+          toast({
+            status: 'error',
+            description: error.response.data.message,
+            duration: 9000,
+            isClosable: true,
+          })
+        }
+      });
+      if (response) {
+        toast({
+          status: 'success',
+          description: 'Conta criada com sucesso, bem-vindo!',
+          duration: 9000,
+          isClosable: true,
+        })
+        await signIn({ email, password });
+      }
+    } else {
+      toast({
+        status: 'error',
+        description: 'Você provavelmente é um robô',
+        duration: 9000,
+        isClosable: true,
+      })
+    }
+  }
+
   async function signIn({ email, password }) {
     const reCaptchaTokenSuccess = await verifyCaptcha("SignIn");
 
@@ -84,8 +121,14 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function signOut() {
+    destroyCookie(undefined, 'ceubexpress-token');
+    setUser(null);
+    Router.reload()
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, signUp, signIn, signOut, user }}>
       {children}
     </AuthContext.Provider>
   );

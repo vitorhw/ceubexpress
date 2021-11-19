@@ -17,27 +17,49 @@ import {
 } from '@chakra-ui/react';
 import { RiShoppingCart2Line } from 'react-icons/ri';
 import { CartItem } from './CartItem';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useCart } from "react-use-cart";
+import { AuthContext } from '../contexts/AuthContext';
+import { api } from '../services/api';
+import { useRouter } from 'next/router';
 
 export function CartDrawer({ setIsLoginModalOpen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
-  const { items, cartTotal, isEmpty, totalUniqueItems } = useCart();
-  const session = false
+  const { user } = useContext(AuthContext)
+  const { items, cartTotal, isEmpty, totalUniqueItems, emptyCart } = useCart();
+  const router = useRouter();
 
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(cartTotal);
 
-  function handleBuy() {
-    if (session) {
-      return
-    }
+  async function handleBuy() {
+    if (!user) {
+      setIsLoginModalOpen(true);
+      onClose();
+    } else {
+      setLoading(true);
 
-    setIsLoginModalOpen(true);
-    onClose();
+      let itemToBuy = [];
+
+      items.map(item => {
+        itemToBuy.push(item.id)
+      })
+
+      const purchaseResponse = await api.post('/purchase', {
+        productOnPurchase: itemToBuy,
+        userId: user.id
+      })
+
+      if (purchaseResponse) {
+        emptyCart();
+        router.push(purchaseResponse.data.success)
+      }
+
+      setLoading(false);
+    }
   }
 
 

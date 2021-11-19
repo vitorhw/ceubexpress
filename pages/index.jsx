@@ -4,11 +4,12 @@ import {
   InputRightElement,
   Flex,
   Grid,
+  Text,
   Center,
   Button,
   Skeleton
 } from "@chakra-ui/react"
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Product } from '../components/Product'
 import { RiMagicFill } from "react-icons/ri";
 import { api } from '../services/api'
@@ -25,22 +26,48 @@ function Home({ favoriteList }) {
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(100);
   const [skip, setSkip] = useState(0);
-  const take = 100;
+  const take = 20;
 
   const handleSearch = useCallback(
-    debounce(async () => {
-      const res = await getSearchProducts();
+    debounce(async (searchQuery) => {
+      await getSearchProducts(searchQuery);
     }, 500), [])
 
-  async function getSearchProducts() {
+  async function getSearchProducts(searchQuery, recurrency = false) {
+    if (searchQuery.length === 0) {
+      getProducts()
+      return
+    }
     setLoading(true);
-    setSkip(0);
+    console.log(searchQuery, recurrency)
+    if (!recurrency) {
+      setSkip(0);
+    }
     const response = await api.post(`/product/search?take=${take}&skip=${skip}`, {
-      search,
+      search: searchQuery,
     })
 
-    console.log(response)
-    console.log(search)
+    let productsFormattedSearch = response.data.map(product => {
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        brand: product.brand,
+        isFavourite: favoriteList.includes(product.id)
+      }
+    })
+
+    if (recurrency) {
+      setProducts(...products, productsFormattedSearch)
+    } else {
+      setProducts(productsFormattedSearch);
+    }
+
+
+
+    setSkip(take + skip)
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -53,7 +80,7 @@ function Home({ favoriteList }) {
 
   useEffect(() => {
     if (search) {
-      handleSearch();
+      handleSearch(search);
     }
   }, [search])
 
@@ -77,6 +104,7 @@ function Home({ favoriteList }) {
     setLoading(false);
   }
 
+
   return (
     <>
       <InputGroup
@@ -98,10 +126,10 @@ function Home({ favoriteList }) {
       </InputGroup>
       <Flex w="100%" justify="center" my="4rem">
         <Grid
-          templateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(4, 1fr)' }}
+          templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
           gap={6}
         >
-          {products.map(product => (
+          {products.length > 0 ? products.map(product => (
             <Skeleton isLoaded={!loading}>
               <Product
                 key={product.id}
@@ -112,13 +140,24 @@ function Home({ favoriteList }) {
                 productImage={product.image}
               />
             </Skeleton>
-          ))}
+          )) :
+            <Center>
+              <Text align="center">Nenhum produto encontrado</Text>
+            </Center>
+          }
         </Grid>
       </Flex>
       <Center>
         <Button
           mb={8}
-          onClick={async () => await getProducts()}
+          onClick={async () => {
+            if (search.length > 0) {
+              await getSearchProducts(search, true);
+            } else {
+              await getProducts()
+            }
+          }
+          }
           isLoading={loading}
           disabled={skip >= total}
         >

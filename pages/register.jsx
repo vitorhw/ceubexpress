@@ -8,7 +8,9 @@ import {
   SimpleGrid,
   Avatar,
   AvatarGroup,
+  Center,
   useBreakpointValue,
+  Spinner,
 } from '@chakra-ui/react';
 import { Input } from "../components/Input";
 import { useForm } from 'react-hook-form'
@@ -17,6 +19,7 @@ import { parseCookies } from 'nookies'
 import { api } from '../services/api';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext'
+import { Counter } from '../components/Counter'
 
 import faker from 'faker';
 import * as yup from 'yup'
@@ -37,7 +40,7 @@ const createUserFormSchema = yup.object().shape({
   ], 'As senhas não conferem')
 })
 
-export default function Register({ user }) {
+export default function Register() {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema)
   })
@@ -76,8 +79,9 @@ export default function Register({ user }) {
         <Stack spacing={{ base: 10, md: 20 }}>
           <Heading
             lineHeight={1.1}
+            display="inline"
             fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            Junte-se a {userCounter}+ compradores!
+            Junte-se a <Counter from={0} to={userCounter} />+ compradores!
           </Heading>
           <Stack direction={'row'} spacing={4} align={'center'}>
             <AvatarGroup>

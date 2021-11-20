@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import { Image, Flex, Spacer, Icon, useColorMode, useBreakpointValue } from '@chakra-ui/react';
 import { LoginInput } from './LoginInput';
 import { RiCloseFill } from 'react-icons/ri';
+import { motion } from 'framer-motion';
 
 export function LoginModal({
   isLoginModalOpen,
@@ -37,6 +38,8 @@ export function LoginModal({
     },
   };
 
+  const MotionModal = motion(Flex)
+
   return (
     <Modal
       isOpen={isLoginModalOpen}
@@ -44,7 +47,10 @@ export function LoginModal({
       style={modalStyles}
       contentLabel="Modal"
     >
-      <Flex>
+      <MotionModal
+        animate={{ scale: [0.8, 1] }}
+        transition={{ duration: 0.1 }}
+      >
         <Spacer />
         <LoginInput handleLoginClose={handleLoginClose} />
         <Spacer />
@@ -68,7 +74,7 @@ export function LoginModal({
             onClick={handleLoginClose}
           />
         </>}
-      </Flex>
+      </MotionModal>
     </Modal>
   );
 }

@@ -6,6 +6,7 @@ import {
   Grid,
   Text,
   Center,
+  Box,
   Button,
   Skeleton
 } from "@chakra-ui/react"
@@ -26,26 +27,24 @@ function Home({ favoriteList }) {
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(100);
   const [skip, setSkip] = useState(0);
-  const take = 20;
+  const take = 8;
 
   const handleSearch = useCallback(
-    debounce(async (searchQuery) => {
-      await getSearchProducts(searchQuery);
+    debounce(async (searchQuery, recurrency, skipAmount = 0, oldProducts = []) => {
+      await getSearchProducts(searchQuery, recurrency, skipAmount, oldProducts);
+
     }, 500), [])
 
-  async function getSearchProducts(searchQuery, recurrency = false) {
-    if (searchQuery.length === 0) {
-      getProducts()
-      return
-    }
+  async function getSearchProducts(searchQuery, recurrency = false, skipAmount, oldProducts) {
     setLoading(true);
-    console.log(searchQuery, recurrency)
     if (!recurrency) {
       setSkip(0);
     }
-    const response = await api.post(`/product/search?take=${take}&skip=${skip}`, {
+
+    const response = await api.post(`/product/search?take=${take}&skip=${skipAmount}`, {
       search: searchQuery,
     })
+    setSkip(take + skipAmount)
 
     let productsFormattedSearch = response.data.map(product => {
       return {
@@ -59,14 +58,12 @@ function Home({ favoriteList }) {
     })
 
     if (recurrency) {
-      setProducts(...products, productsFormattedSearch)
+      setProducts([...oldProducts, ...productsFormattedSearch])
     } else {
       setProducts(productsFormattedSearch);
     }
 
 
-
-    setSkip(take + skip)
     setLoading(false);
   }
 
@@ -79,12 +76,15 @@ function Home({ favoriteList }) {
   }, []);
 
   useEffect(() => {
-    if (search) {
+    setSkip(0)
+    if (search.length > 0) {
       handleSearch(search);
+    } else {
+      getProducts(true);
     }
   }, [search])
 
-  async function getProducts() {
+  async function getProducts(reset = false) {
     setLoading(true);
     const response = await api.get(`/product/pagination?take=${take}&skip=${skip}`)
     setTotal(response.data.productsCount);
@@ -99,7 +99,12 @@ function Home({ favoriteList }) {
       }
     })
 
-    setProducts([...products, ...productsFormatted]);
+    if (reset) {
+      setProducts(productsFormatted);
+    } else {
+      setProducts([...products, ...productsFormatted]);
+    }
+
     setSkip(skip + take);
     setLoading(false);
   }
@@ -125,11 +130,12 @@ function Home({ favoriteList }) {
         />
       </InputGroup>
       <Flex w="100%" justify="center" my="4rem">
+
         <Grid
           templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
           gap={6}
         >
-          {products.length > 0 ? products.map(product => (
+          {products.map(product => (
             <Skeleton isLoaded={!loading}>
               <Product
                 key={product.id}
@@ -140,19 +146,18 @@ function Home({ favoriteList }) {
                 productImage={product.image}
               />
             </Skeleton>
-          )) :
-            <Center>
-              <Text align="center">Nenhum produto encontrado</Text>
-            </Center>
-          }
+          ))}
         </Grid>
       </Flex>
+      {products.length === 0 && !loading &&
+        <Text mb="100%" align="center" >Nenhum resultado!</Text>
+      }
       <Center>
         <Button
           mb={8}
           onClick={async () => {
             if (search.length > 0) {
-              await getSearchProducts(search, true);
+              await handleSearch(search, true, skip, products);
             } else {
               await getProducts()
             }

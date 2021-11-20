@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 import { useCart } from "react-use-cart";
+import { motion } from "framer-motion"
 
 export function Product({
   id,
@@ -51,15 +52,18 @@ export function Product({
     });
   }
 
+  const MotionFlex = motion(Flex)
+
   return (
-    <Flex
+    <MotionFlex
       _hover={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}
       direction="column"
       align="center"
-      width="100%"
+      width="240px"
       role="group"
       cursor="pointer"
       onClick={() => handleAddProduct(id)}
+      whileTap={{ scale: 0.95 }}
     >
       <VStack
         border="0.5px solid rgba(196, 196, 196, 0.3)"
@@ -122,6 +126,6 @@ export function Product({
           </Flex>
         </VStack>
       </VStack>
-    </Flex>
+    </MotionFlex>
   );
 }

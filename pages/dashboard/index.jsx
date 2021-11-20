@@ -3,6 +3,7 @@ import { Box, Text, SimpleGrid, useColorMode, Skeleton } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
 import { parseCookies } from 'nookies'
+import { Counter } from "../../components/Counter"
 
 import jwt from 'jsonwebtoken'
 
@@ -42,7 +43,7 @@ function index() {
           >
             <Text fontSize="lg" mb="4">Usuários</Text>
             <Box>
-              <Text fontSize="4xl">{stats.users}</Text>
+              <Text fontSize="4xl"><Counter from={0} to={stats.users} /></Text>
             </Box>
           </Box>
         </Skeleton>
@@ -56,7 +57,7 @@ function index() {
           >
             <Text fontSize="lg" mb="4">Produtos</Text>
             <Box>
-              <Text fontSize="4xl">{stats.orders}</Text>
+              <Text fontSize="4xl"><Counter from={0} to={stats.orders} /></Text>
             </Box>
           </Box>
         </Skeleton>

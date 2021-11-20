@@ -60,6 +60,7 @@ export function Header({ setIsLoginModalOpen }) {
                 isRound="true"
                 icon={<LoginIcon transform={'translateY(1px)'} />}
                 onClick={setIsLoginModalOpen}
+                key={1}
               />
             )}
           </HStack>

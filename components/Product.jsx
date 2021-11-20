@@ -7,25 +7,48 @@ import {
   VStack,
   HStack,
   Box,
-  useToast
+  useToast,
+  IconButton
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 import { useCart } from "react-use-cart";
 import { motion } from "framer-motion"
+import { api } from '../services/api'
+import { AuthContext } from '../contexts/AuthContext';
+import { useState, useEffect, useContext } from 'react'
 
 export function Product({
   id,
-  isFavourite = true,
-  productBrand = 'Error',
-  productName = 'Error',
-  productPrice = 'Error',
-  productImage = 'Error',
+  isFavourite = false,
+  productBrand = 'Erro',
+  productName = 'Erro',
+  productPrice = 'Erro',
+  productImage = 'Erro',
 }) {
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits: 2,
   }).format(productPrice);
   const { addItem, inCart } = useCart();
   const toast = useToast()
+  const { user } = useContext(AuthContext)
+  const [favourite, setFavourite] = useState(isFavourite)
+
+  async function handleFavourite() {
+    if (favourite) {
+      const response = await api.delete(`/favorites/${id}`)
+      if (response) {
+        setFavourite(false)
+      }
+    } else {
+      const response = await api.post(`/favorites/`, {
+        productId: id,
+        userId: user.id
+      })
+      if (response) {
+        setFavourite(true)
+      }
+    }
+  }
 
   function handleAddProduct(productId) {
     if (inCart(String(productId))) {
@@ -60,9 +83,8 @@ export function Product({
       direction="column"
       align="center"
       width="240px"
-      role="group"
       cursor="pointer"
-      onClick={() => handleAddProduct(id)}
+
       whileTap={{ scale: 0.95 }}
     >
       <VStack
@@ -74,14 +96,17 @@ export function Product({
           position="relative"
           w="100%"
         >
-          <Icon
-            as={isFavourite ? RiStarFill : RiStarLine}
+          <IconButton
+            as={favourite ? RiStarFill : RiStarLine}
             position="absolute"
             top="0.5rem"
             right="0.5rem"
             opacity="0.5"
-            color={isFavourite ? 'yellow.400' : 'gray.400'}
+            variant="unstyled"
+            size="sm"
+            color={favourite ? 'yellow.400' : 'gray.400'}
             _hover={{ opacity: 1 }}
+            onClick={handleFavourite}
           />
           <Image
             objectFit="cover"
@@ -92,7 +117,12 @@ export function Product({
             alt="produto"
           />
         </VStack>
-        <VStack alignItems="flex-start" w="100%">
+        <VStack
+          alignItems="flex-start"
+          w="100%"
+          role="group"
+          onClick={() => handleAddProduct(id)}
+        >
           <Box h="98px" p="1rem">
             <Box color="gray.400" noOfLines={1} letterSpacing="wide" fontSize="xs">
               {productBrand}

@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   HStack,
+  Spinner,
   Image,
   useBreakpointValue,
   Skeleton,
@@ -31,13 +32,20 @@ function Purchases() {
     }
     const response = await api.get(`/purchase/${user.id}`);
     setPurchases(response.data);
-    console.log(response.data)
     setLoading(false);
   }
 
   useEffect(() => {
     retrievePurchases();
   }, [user]);
+
+  if (loading) {
+    return (
+      <Center my="8rem">
+        <Spinner />
+      </Center>
+    )
+  }
 
 
   if (purchases.length === 0) {

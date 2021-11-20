@@ -23,7 +23,7 @@ export function ProfilePopover() {
   return (
     <Popover isLazy trigger="click" >
       <PopoverTrigger>
-        <Avatar size="sm" as="button" name={user.name} />
+        <Avatar size="sm" as="button" color="gray.100" name={user.name} />
       </PopoverTrigger>
       <PopoverContent width="8rem">
         <PopoverHeader fontWeight="semibold">

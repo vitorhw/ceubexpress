@@ -8,7 +8,8 @@ import {
   Center,
   Box,
   Button,
-  Skeleton
+  Skeleton,
+  Spinner
 } from "@chakra-ui/react"
 import { useState, useEffect, useCallback } from 'react';
 import { Product } from '../components/Product'
@@ -45,8 +46,9 @@ function Home({ favoriteList }) {
       search: searchQuery,
     })
     setSkip(take + skipAmount)
+    setTotal(response.data.productsCount)
 
-    let productsFormattedSearch = response.data.map(product => {
+    let productsFormattedSearch = response.data.products.map(product => {
       return {
         id: product.id,
         name: product.name,
@@ -129,8 +131,8 @@ function Home({ favoriteList }) {
           onChange={(e) => setSearch(e.target.value)}
         />
       </InputGroup>
+      {loading && <Center my="8rem"><Spinner /></Center>}
       <Flex w="100%" justify="center" my="4rem">
-
         <Grid
           templateColumns={{ sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
           gap={6}
@@ -144,6 +146,7 @@ function Home({ favoriteList }) {
                 productName={product.name}
                 productPrice={product.price}
                 productImage={product.image}
+                isFavourite={product.isFavourite}
               />
             </Skeleton>
           ))}
@@ -177,8 +180,6 @@ export default Home
 
 export const getServerSideProps = async (ctx) => {
   const { ['ceubexpress-token']: token } = parseCookies(ctx)
-  const apiClient = getAPIClient(ctx);
-
 
   if (!token) {
     return {
@@ -188,6 +189,7 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
+  const apiClient = getAPIClient(ctx);
   const json = jwt.decode(token);
   const { sub } = json;
   let data = [];

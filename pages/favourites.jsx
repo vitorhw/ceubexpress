@@ -1,13 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
 import { RiStarLine } from 'react-icons/ri';
-import { Text, Center, Skeleton, Flex, Grid } from '@chakra-ui/react';
+import { Text, Center, Skeleton, Flex, Grid, Spinner } from '@chakra-ui/react';
 import { parseCookies } from 'nookies'
 import { AuthContext } from '../contexts/AuthContext';
 import { api } from '../services/api';
 import { Product } from '../components/Product';
+import { getAPIClient } from '../services/axios'
+
+import jwt from 'jsonwebtoken';
 
 
-function Favourites() {
+function Favourites({ favoriteList }) {
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const { user } = useContext(AuthContext);
@@ -25,6 +28,14 @@ function Favourites() {
   useEffect(() => {
     retrieveFavourites();
   }, [user]);
+
+  if (loading) {
+    return (
+      <Center my="8rem">
+        <Spinner />
+      </Center>
+    )
+  }
 
   if (favorites.length === 0) {
     return (
@@ -52,7 +63,7 @@ function Favourites() {
             <Product
               key={favorite.product.id}
               id={favorite.product.id}
-              isFavourite={true}
+              isFavourite={favoriteList.includes(favorite.product.id)}
               productBrand={favorite.product.brand}
               productName={favorite.product.name}
               productPrice={favorite.product.price}
@@ -79,7 +90,27 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
+  const apiClient = getAPIClient(ctx);
+  const json = jwt.decode(token);
+  const { sub } = json;
+  let data = [];
+
+  try {
+    const response = await apiClient.get(`/favorites/${sub}`)
+    data = response.data.map((favorite) => {
+      return favorite.product.id
+    })
+  } catch {
+    return {
+      props: {
+        favoriteList: [],
+      }
+    }
+  }
+
   return {
-    props: {}
+    props: {
+      favoriteList: data,
+    }
   }
 }

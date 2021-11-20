@@ -74,21 +74,22 @@ export function CartDrawer({ setIsLoginModalOpen }) {
           lineHeight="0"
           onClick={onOpen}
           icon={<Icon as={RiShoppingCart2Line} />} />
-        {totalUniqueItems > 0 && <Text
-          position="absolute"
-          top="0"
-          right="0"
-          fontSize="10px"
-          bgColor="red.400"
-          color="white"
-          fontWeight="bold"
-          h="1rem"
-          w="1rem"
-          borderRadius="full"
-          textAlign="center"
-        >
-          {totalUniqueItems >= 10 ? "9+" : totalUniqueItems}
-        </Text>}
+        {totalUniqueItems > 0 &&
+          <Text
+            position="absolute"
+            top="0"
+            right="0"
+            fontSize="10px"
+            bgColor="red.400"
+            color="white"
+            fontWeight="bold"
+            h="1rem"
+            w="1rem"
+            borderRadius="full"
+            textAlign="center"
+          >
+            {totalUniqueItems >= 10 ? "9+" : totalUniqueItems}
+          </Text>}
       </Flex>
       <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />

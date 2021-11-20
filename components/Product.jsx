@@ -15,7 +15,9 @@ import { useCart } from "react-use-cart";
 import { motion } from "framer-motion"
 import { api } from '../services/api'
 import { AuthContext } from '../contexts/AuthContext';
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
+
+
 
 export function Product({
   id,
@@ -32,8 +34,20 @@ export function Product({
   const toast = useToast()
   const { user } = useContext(AuthContext)
   const [favourite, setFavourite] = useState(isFavourite)
+  const [loading, setLoading] = useState(false)
+  const delay = (amount = 3000) => new Promise(resolve => setTimeout(resolve, amount))
 
   async function handleFavourite() {
+    if (!user) {
+      toast({
+        title: 'Você precisa estar logado para favoritar um produto',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+      return
+    }
+    setLoading(true)
     if (favourite) {
       const response = await api.delete(`/favorites/${id}`)
       if (response) {
@@ -48,6 +62,8 @@ export function Product({
         setFavourite(true)
       }
     }
+    await delay()
+    setLoading(false)
   }
 
   function handleAddProduct(productId) {
@@ -75,16 +91,15 @@ export function Product({
     });
   }
 
-  const MotionFlex = motion(Flex)
+  const FlexMotion = motion(Flex)
 
   return (
-    <MotionFlex
+    <FlexMotion
       _hover={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}
       direction="column"
       align="center"
       width="240px"
       cursor="pointer"
-
       whileTap={{ scale: 0.95 }}
     >
       <VStack
@@ -96,17 +111,18 @@ export function Product({
           position="relative"
           w="100%"
         >
-          <IconButton
+          <Icon
             as={favourite ? RiStarFill : RiStarLine}
             position="absolute"
             top="0.5rem"
             right="0.5rem"
             opacity="0.5"
-            variant="unstyled"
-            size="sm"
             color={favourite ? 'yellow.400' : 'gray.400'}
             _hover={{ opacity: 1 }}
-            onClick={handleFavourite}
+            onClick={async () => !loading && await handleFavourite()}
+            disabled={loading}
+            whileTap={{ scale: 4 }}
+            transition={{ duration: 0.5 }}
           />
           <Image
             objectFit="cover"
@@ -156,6 +172,6 @@ export function Product({
           </Flex>
         </VStack>
       </VStack>
-    </MotionFlex>
+    </FlexMotion>
   );
 }

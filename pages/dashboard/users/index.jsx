@@ -9,42 +9,60 @@ import {
   Th,
   Tbody,
   Td,
+  Skeleton,
+  IconButton,
+  Icon,
   Text,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
-import { useState } from 'react'
-import faker from 'faker'
+import { useEffect, useState } from 'react'
 import { Pagination } from '../../../components/Pagination'
 import { parseCookies } from 'nookies'
+import { api } from "../../../services/api"
+import { RiVipCrown2Fill, RiVipCrown2Line } from 'react-icons/ri'
+import { useQuery } from 'react-query'
+import { queryClient } from '../../../services/queryClient'
+import { getAPIClient } from '../../../services/axios'
 
 import jwt from 'jsonwebtoken'
 
 export default function Users() {
   const [page, setPage] = useState(1);
-  const isLoading = false
-  const isFetching = false
-  const error = undefined
+  const [loading, setLoading] = useState(false)
+  const take = 2
+  const delay = (amount = 3000) => new Promise(resolve => setTimeout(resolve, amount))
 
 
-  // async function handlePrefetchUser(userId) {
-  //   await queryClient.prefetchQuery(['user', userId], async () => {
-  //     const response = await api.get(`users/${userId}`)
+  async function getUsers(page) {
+    const { data } = await api.get(`/user?take=${take}&skip=${(page - 1) * take}`)
+    const totalCount = data.usersTotal
+    const users = data.users
 
-  //     return response.data;
-  //   }, {
-  //     staleTime: 1000 * 60 * 10 // 10 min
-  //   })
-  // }
-
-  const users = [...Array(10)].map((_, i) => {
-    const name = faker.name.findName();
     return {
-      id: i,
-      name,
-      email: faker.internet.email(name),
-      createdAt: faker.date.past().toLocaleDateString('pt-BR', { day: 'numeric', month: 'numeric', year: 'numeric' }),
+      users,
+      totalCount
     }
-  });
+  }
+
+  const { data, isLoading, isFetching, error } = useQuery(['users', page], () => getUsers(page), {
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  })
+
+
+  async function updateRoleset({ id, isUserAdmin }) {
+    if (!loading) {
+      setLoading(true)
+      const response = await api.patch(`/user/${id}`, {
+        isUserAdmin: !isUserAdmin
+      })
+      if (response) {
+        queryClient.invalidateQueries('users')
+      }
+    }
+
+    await delay()
+    setLoading(false)
+  }
 
   return (
     <Dashboard >
@@ -70,21 +88,27 @@ export default function Users() {
             <Table colorScheme="whiteAlpha">
               <Thead>
                 <Tr>
+                  <Th px={["4", "4", "6"]} width="8">Admin</Th>
                   <Th>Usuário</Th>
                   <Th>Registro</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {users.map(user => {
+                {data.users.map(user => {
                   return (
                     <Tr key={user.id}>
+                      <Td>
+                        <IconButton onClick={async () => { await updateRoleset(user) }}>
+                          <Icon as={user.isUserAdmin ? RiVipCrown2Fill : RiVipCrown2Line} fontSize="20" />
+                        </IconButton>
+                      </Td>
                       <Td>
                         <Box>
                           <Text fontWeight="bold" color="pink.500">{user.name}</Text>
                           <Text fontSize="sm" color="gray.300">{user.email}</Text>
                         </Box>
                       </Td>
-                      <Td>{user.createdAt}</Td>
+                      <Td>{user.stripe_customer_id}</Td>
                     </Tr>
                   )
                 })}
@@ -92,7 +116,8 @@ export default function Users() {
             </Table>
 
             <Pagination
-              totalCountOfRegisters={1000}
+              totalCountOfRegisters={data.totalCount}
+              registerPerPage={take}
               currentPage={page}
               onPageChange={setPage}
             />
@@ -105,9 +130,8 @@ export default function Users() {
 
 export const getServerSideProps = async (ctx) => {
   const { ['ceubexpress-token']: token } = parseCookies(ctx)
-  const json = jwt.decode(token);
 
-  if (!json.role) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -116,7 +140,31 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
-  return {
-    props: {}
+  const apiClient = getAPIClient(ctx);
+  const json = jwt.decode(token);
+  const { email } = json;
+
+  try {
+    const { data } = await apiClient.get(`/user/client/${email}`)
+    if (data.isUserAdmin) {
+      return {
+        props: {}
+      }
+    }
+    else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        }
+      }
+    }
+  } catch {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
   }
 }

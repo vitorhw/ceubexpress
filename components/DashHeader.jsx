@@ -36,6 +36,7 @@ export function DashHeader() {
           fontSize="24"
           variant="unstyled"
           onClick={onOpen}
+          display="flex"
           mr="2"
         >
         </IconButton>
@@ -45,6 +46,7 @@ export function DashHeader() {
         fontWeight="bold"
         letterSpacing="tight"
         w="64"
+        lineHeight="0"
       >
         ex
         <Text as="span" ml="1" color="pink.500">.</Text>

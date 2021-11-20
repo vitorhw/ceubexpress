@@ -1,6 +1,7 @@
 import { Stack, Box, Text } from '@chakra-ui/react'
 import { PaginationItem } from './PaginationItem'
 
+
 const sibilingsCount = 1;
 
 function generatePagesArray(from, to) {
@@ -13,17 +14,17 @@ function generatePagesArray(from, to) {
 
 export function Pagination({
   totalCountOfRegisters,
-  registerPerPage = 10,
+  registerPerPage = 2,
   currentPage = 1,
   onPageChange
 }) {
-  const lastPage = Math.floor(totalCountOfRegisters / registerPerPage);
+  const lastPage = Math.ceil(totalCountOfRegisters / registerPerPage);
 
   const previousPages = currentPage > 1
     ? generatePagesArray(currentPage - 1 - sibilingsCount, currentPage - 1)
     : []
 
-  const nextPages = currentPage < lastPage
+  const nextPages = currentPage - 1 < lastPage
     ? generatePagesArray(currentPage, Math.min(currentPage + sibilingsCount, lastPage))
     : []
 
@@ -36,7 +37,7 @@ export function Pagination({
       align="center"
     >
       <Box>
-        <strong>{(currentPage - 1) * registerPerPage}</strong> - <strong>{ }</strong> de <strong>{totalCountOfRegisters}</strong>
+        <strong>{(currentPage * registerPerPage) - registerPerPage + 1}</strong> - <strong>{ }</strong> de <strong>{totalCountOfRegisters}</strong>
       </Box>
 
       <Stack direction="row" spacing="2">

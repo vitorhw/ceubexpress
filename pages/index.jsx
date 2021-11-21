@@ -22,13 +22,14 @@ import debounce from 'lodash.debounce'
 import jwt from 'jsonwebtoken'
 
 
-function Home({ favoriteList }) {
+function Home() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(100);
   const [skip, setSkip] = useState(0);
   const take = 8;
+  let favoriteList = [];
 
   const handleSearch = useCallback(
     debounce(async (searchQuery, recurrency, skipAmount = 0, oldProducts = []) => {
@@ -69,12 +70,34 @@ function Home({ favoriteList }) {
     setLoading(false);
   }
 
-  useEffect(() => {
+  useEffect(async () => {
+    async function getUserFavourites() {
+      const { ['ceubexpress-token']: token } = parseCookies();
+      const json = jwt.decode(token);
+      const { sub } = json;
+      let data = [];
+
+      try {
+        const response = await api.get(`/favorites/${sub}`)
+
+        data = response.data.map((favorite) => {
+          return favorite.product.id
+        })
+
+      } catch {
+        return []
+      }
+      return data;
+
+    }
+
     async function retrieveProducts() {
       await getProducts();
     }
 
-    retrieveProducts()
+    favoriteList = await getUserFavourites();
+    console.log(favoriteList)
+    retrieveProducts();
   }, []);
 
   useEffect(() => {
@@ -177,40 +200,3 @@ function Home({ favoriteList }) {
 }
 
 export default Home
-
-export const getServerSideProps = async (ctx) => {
-  const { ['ceubexpress-token']: token } = parseCookies(ctx)
-
-  if (!token) {
-    return {
-      props: {
-        favoriteList: [],
-      }
-    }
-  }
-
-  const apiClient = getAPIClient(ctx);
-  const json = jwt.decode(token);
-  const { sub } = json;
-  let data = [];
-
-  try {
-    const response = await apiClient.get(`/favorites/${sub}`)
-
-    data = response.data.map((favorite) => {
-      return favorite.product.id
-    })
-  } catch {
-    return {
-      props: {
-        favoriteList: [],
-      }
-    }
-  }
-
-  return {
-    props: {
-      favoriteList: data,
-    }
-  }
-}

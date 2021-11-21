@@ -9,13 +9,12 @@ import {
   Th,
   Tbody,
   Td,
-  Skeleton,
   IconButton,
   Icon,
   Text,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Pagination } from '../../../components/Pagination'
 import { parseCookies } from 'nookies'
 import { api } from "../../../services/api"
@@ -146,7 +145,8 @@ export const getServerSideProps = async (ctx) => {
 
   try {
     const { data } = await apiClient.get(`/user/client/${email}`)
-    if (data.isUserAdmin) {
+    if (!data.isUserAdmin) {
+      // DATA.ISUSERADMIN
       return {
         props: {}
       }

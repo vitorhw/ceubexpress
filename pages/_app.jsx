@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import { ToastContainer } from 'react-toastify';
+import Head from 'next/head'
 import { ChakraProvider, ColorModeScript, Box } from "@chakra-ui/react"
 import { Header } from "../components/Header";
 import { LoginModal } from "../components/LoginModal";
@@ -15,7 +14,6 @@ import { CartProvider } from "react-use-cart";
 
 import theme from '../styles/theme';
 
-import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -35,7 +33,8 @@ function MyApp({ Component, pageProps }) {
           <AuthProvider>
             <CartProvider>
               <Head>
-                <title>Ceubexpress</title>
+                <link rel="shortcut icon" href="/favicon.png" />
+                <title>ceubexpress</title>
               </Head>
               <LoginModal
                 isLoginModalOpen={isLoginModalOpen}
@@ -46,17 +45,6 @@ function MyApp({ Component, pageProps }) {
                 <Header setIsLoginModalOpen={setIsLoginModalOpen} />
               }
               <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-              <ToastContainer
-                position="top-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={true}
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover={false}
-              />
               <Box minH="100vh">
                 <Component {...pageProps} />
               </Box>

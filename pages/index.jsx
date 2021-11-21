@@ -196,6 +196,7 @@ export const getServerSideProps = async (ctx) => {
 
   try {
     const response = await apiClient.get(`/favorites/${sub}`)
+
     data = response.data.map((favorite) => {
       return favorite.product.id
     })

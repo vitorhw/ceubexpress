@@ -8,7 +8,7 @@ import { Counter } from "../../components/Counter"
 import jwt from 'jsonwebtoken'
 
 function index() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const [stats, setStats] = useState({
     users: 0,
     orders: 0,

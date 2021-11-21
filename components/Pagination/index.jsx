@@ -37,7 +37,7 @@ export function Pagination({
       align="center"
     >
       <Box>
-        <strong>{(currentPage * registerPerPage) - registerPerPage + 1}</strong> - <strong>{ }</strong> de <strong>{totalCountOfRegisters}</strong>
+        <strong>{(currentPage * registerPerPage) - registerPerPage + 1}</strong> - <strong>{(currentPage * registerPerPage)}</strong> de <strong>{totalCountOfRegisters}</strong>
       </Box>
 
       <Stack direction="row" spacing="2">

@@ -8,7 +8,6 @@ import {
   HStack,
   Box,
   useToast,
-  IconButton
 } from '@chakra-ui/react';
 import { RiShoppingCart2Fill, RiStarLine, RiStarFill } from 'react-icons/ri';
 import { useCart } from "react-use-cart";

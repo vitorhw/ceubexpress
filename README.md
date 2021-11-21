@@ -1,37 +1,13 @@
 <a href="#">
-    <img src="./public/logo.png" alt="logo" title="Ceubexpress" align="right" height="60" />
+    <img src="./public/logo.png" alt="logo" title="Ceubexpress" align="right" height="30" />
 </a>
 
-# CEUBEXPRESS Marketplace
+# CEUBEXPRESS
 
 ![License](https://badgen.net/badge/license/MIT/blue)
 ![Version](https://badgen.net/badge/development/v0.0.0/yellow)
 
-[CEUBEXPRESS](#) is a lightweight and minimalist marketplace purely built in ReactJS.
+[CEUBEXPRESS](#) é um projeto de Engenharia de Software do UniCEUB.
 
-## Table of content
-
-- [Information](#information)
-- [Installation](#installation)
-- [Development](#development)
-  - [Database](#database)
-  - [Styling](#styling)
-  - [CMS](#cms)
-  - [ReactJS](#react)
-  - [NodeJS](#node)
-
-## Information
-This is part of a final paper for a Software Engineering class in the University Center of Brasilia. The group is composed by Vitor, Thalles, Vinicius and Wallace.
-
-#### [Try out our live demo](#https://)
+#### [Live demo](#https://uniceubexpress.vercel.app/)
 <img src="./public/preview.png" alt="page preview" title="Ceubexpress" align="center" />
-
-## Installation
-
-## Development
-### Database
-### Styling
-### CMS
-### React
-### Node
-  

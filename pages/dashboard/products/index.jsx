@@ -12,51 +12,54 @@ import {
   IconButton,
   Tbody,
   Td,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
-import { RiAddLine, RiPencilLine } from 'react-icons/ri'
+import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Pagination } from "../../../components/Pagination";
-import { useState } from 'react'
-import { parseCookies } from 'nookies'
-import { useQuery } from 'react-query'
-import { queryClient } from '../../../services/queryClient'
-import { getAPIClient } from '../../../services/axios'
-import { api } from '../../../services/api'
+import { useState } from "react";
+import { parseCookies } from "nookies";
+import { useQuery } from "react-query";
+import { getAPIClient } from "../../../services/axios";
+import { api } from "../../../services/api";
 
-import Link from 'next/link'
-import jwt from 'jsonwebtoken'
-
+import Link from "next/link";
+import jwt from "jsonwebtoken";
 
 export default function Products() {
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false)
-  const take = 10
+  const take = 10;
 
   async function getProducts(page) {
-    const { data } = await api.get(`/product/pagination?take=${take}&skip=${(page - 1) * take}`)
-    const totalCount = data.productsCount
-    const products = data.products
+    const { data } = await api.get(
+      `/product/pagination?take=${take}&skip=${(page - 1) * take}`
+    );
+    const totalCount = data.productsCount;
+    const products = data.products;
 
     return {
       products,
-      totalCount
-    }
+      totalCount,
+    };
   }
 
-  const { data, isLoading, isFetching, error } = useQuery(['products', page], () => getProducts(page), {
-    staleTime: 1000 * 60 * 10, // 10 minutes
-  })
+  const { data, isLoading, isFetching, error } = useQuery(
+    ["products", page],
+    () => getProducts(page),
+    {
+      staleTime: 1000 * 60 * 10, // 10 minutes
+    }
+  );
 
   return (
     <Dashboard>
-
       <Box flex="1" borderRadius={8} p="8">
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="lg" fontWeight="normal">
             Produtos
-
-            {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
+            {!isLoading && isFetching && (
+              <Spinner size="sm" color="gray.500" ml="4" />
+            )}
           </Heading>
 
           <Link href="/dashboard/products/create">
@@ -71,8 +74,6 @@ export default function Products() {
               Novo
             </Button>
           </Link>
-
-
         </Flex>
 
         {isLoading ? (
@@ -88,13 +89,15 @@ export default function Products() {
             <Table colorScheme="whiteAlpha">
               <Thead>
                 <Tr>
-                  <Th px={["4", "4", "6"]} width="8">Editar</Th>
+                  <Th px={["4", "4", "6"]} width="8">
+                    Editar
+                  </Th>
                   <Th>Produto</Th>
                   <Th>Criado</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {data.products.map(product => {
+                {data.products.map((product) => {
                   return (
                     <Tr key={product.id}>
                       <Td>
@@ -103,13 +106,15 @@ export default function Products() {
                             <Icon as={RiPencilLine} fontSize="20" />
                           </IconButton>
                         </Link>
-
                       </Td>
                       <Td>
                         <Box>
-                          <Text fontWeight="bold" noOfLines={1}>{product.name}</Text>
+                          <Text fontWeight="bold" noOfLines={1}>
+                            {product.name}
+                          </Text>
                           <Text fontSize="sm" color="gray.300">
-                            R${new Intl.NumberFormat('pt-BR', {
+                            R$
+                            {new Intl.NumberFormat("pt-BR", {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }).format(product.price)}
@@ -117,10 +122,13 @@ export default function Products() {
                         </Box>
                       </Td>
                       <Td>
-                        {new Date(product.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {new Date(product.created_at).toLocaleDateString(
+                          "pt-BR",
+                          { year: "numeric", month: "long", day: "numeric" }
+                        )}
                       </Td>
                     </Tr>
-                  )
+                  );
                 })}
               </Tbody>
             </Table>
@@ -139,15 +147,15 @@ export default function Products() {
 }
 
 export const getServerSideProps = async (ctx) => {
-  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const { ["ceubexpress-token"]: token } = parseCookies(ctx);
 
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const apiClient = getAPIClient(ctx);
@@ -155,26 +163,25 @@ export const getServerSideProps = async (ctx) => {
   const { email } = json;
 
   try {
-    const { data } = await apiClient.get(`/user/client/${email}`)
+    const { data } = await apiClient.get(`/user/client/${email}`);
     if (data.isUserAdmin === true) {
       return {
-        props: {}
-      }
-    }
-    else {
+        props: {},
+      };
+    } else {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
-        }
-      }
+        },
+      };
     }
   } catch {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
-}
+};

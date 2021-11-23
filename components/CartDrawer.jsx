@@ -14,25 +14,25 @@ import {
   HStack,
   useDisclosure,
   Spacer,
-} from '@chakra-ui/react';
-import { RiShoppingCart2Line } from 'react-icons/ri';
-import { CartItem } from './CartItem';
-import { useState, useContext } from 'react';
+} from "@chakra-ui/react";
+import { RiShoppingCart2Line } from "react-icons/ri";
+import { CartItem } from "./CartItem";
+import { useState, useContext } from "react";
 import { useCart } from "react-use-cart";
-import { AuthContext } from '../contexts/AuthContext';
-import { api } from '../services/api';
-import { useRouter } from 'next/router';
+import { AuthContext } from "../contexts/AuthContext";
+import { api } from "../services/api";
+import { useRouter } from "next/router";
 
 export function CartDrawer({ setIsLoginModalOpen }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const { items, cartTotal, isEmpty, totalUniqueItems, emptyCart } = useCart();
   const router = useRouter();
 
-  const formattedTotal = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  const formattedTotal = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   }).format(cartTotal);
 
   async function handleBuy() {
@@ -44,37 +44,35 @@ export function CartDrawer({ setIsLoginModalOpen }) {
 
       let itemToBuy = [];
 
-      items.map(item => {
-        itemToBuy.push(item.id)
-      })
+      items.map((item) => {
+        itemToBuy.push(item.id);
+      });
 
-      const purchaseResponse = await api.post('/purchase', {
+      const purchaseResponse = await api.post("/purchase", {
         productOnPurchase: itemToBuy,
-        userId: user.id
-      })
+        userId: user.id,
+      });
 
       if (purchaseResponse) {
         emptyCart();
-        router.push(purchaseResponse.data.success)
+        router.push(purchaseResponse.data.success);
       }
 
       setLoading(false);
     }
   }
 
-
   return (
     <>
-      <Flex
-        position="relative"
-      >
+      <Flex position="relative">
         <IconButton
           variant="unstyled"
           fontSize="1.5rem"
           lineHeight="0"
           onClick={onOpen}
-          icon={<Icon as={RiShoppingCart2Line} />} />
-        {totalUniqueItems > 0 &&
+          icon={<Icon as={RiShoppingCart2Line} />}
+        />
+        {totalUniqueItems > 0 && (
           <Text
             position="absolute"
             top="0"
@@ -89,7 +87,8 @@ export function CartDrawer({ setIsLoginModalOpen }) {
             textAlign="center"
           >
             {totalUniqueItems >= 10 ? "9+" : totalUniqueItems}
-          </Text>}
+          </Text>
+        )}
       </Flex>
       <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -102,7 +101,7 @@ export function CartDrawer({ setIsLoginModalOpen }) {
             {isEmpty ? (
               <Text>Está meio vazio aqui :(</Text>
             ) : (
-              items.map(product => (
+              items.map((product) => (
                 <CartItem
                   key={product.id}
                   id={product.id}

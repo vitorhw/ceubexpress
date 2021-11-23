@@ -7,58 +7,69 @@ import {
   VStack,
   HStack,
   useToast,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { Input } from "../../../components/Input";
 import { Dashboard } from "../../../components/Dashboard";
-import Link from 'next/link'
-import * as yup from 'yup'
-import { useForm, FormProvider } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { useRouter } from 'next/router'
-import { parseCookies } from 'nookies'
-import { api } from '../../../services/api'
-import { FileInput } from '../../../components/FileInput'
-import { getAPIClient } from '../../../services/axios'
-import { queryClient } from '../../../services/queryClient'
+import Link from "next/link";
+import * as yup from "yup";
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
+import { api } from "../../../services/api";
+import { FileInput } from "../../../components/FileInput";
+import { getAPIClient } from "../../../services/axios";
+import { queryClient } from "../../../services/queryClient";
 
-import jwt from 'jsonwebtoken'
-
+import jwt from "jsonwebtoken";
 
 const createUserFormSchema = yup.object().shape({
-  name: yup.string().required('Nome é obrigatório').min(3, 'Nome deve conter no mínimo 3 caracteres').max(30, 'Nome deve conter no máximo 60 caractes'),
-  price: yup.number().required('Preço é obrigatório').min(0, 'Preço deve ser maior que R$0,00').max(10000, 'Preço deve ser menor que R$10.001'),
-  brand: yup.string().required('Marca é obrigatório').min(3, 'Marca deve conter no mínimo 3 caracteres').max(30, 'Marca deve conter no máximo 60 caractes'),
-})
+  name: yup
+    .string()
+    .required("Nome é obrigatório")
+    .min(3, "Nome deve conter no mínimo 3 caracteres")
+    .max(30, "Nome deve conter no máximo 60 caractes"),
+  price: yup
+    .number()
+    .required("Preço é obrigatório")
+    .min(0, "Preço deve ser maior que R$0,00")
+    .max(10000, "Preço deve ser menor que R$10.001"),
+  brand: yup
+    .string()
+    .required("Marca é obrigatório")
+    .min(3, "Marca deve conter no mínimo 3 caracteres")
+    .max(30, "Marca deve conter no máximo 60 caractes"),
+});
 
 export default function Create() {
   const toast = useToast();
-  const router = useRouter()
+  const router = useRouter();
   const methods = useForm({
     resolver: yupResolver(createUserFormSchema),
     mode: "onBlur",
-  })
+  });
 
-  const { errors } = methods.formState
+  const { errors } = methods.formState;
 
-  const handleCreateProduct = async values => {
-    const formData = new FormData()
+  const handleCreateProduct = async (values) => {
+    const formData = new FormData();
 
     if (!values.image) {
       toast({
-        title: 'Erro',
-        description: 'Selecione uma imagem',
-        status: 'error',
+        title: "Erro",
+        description: "Selecione uma imagem",
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
-      return
+      return;
     }
 
-    formData.append('image', values.image[0])
-    formData.append('brand', values.brand)
-    formData.append('name', values.name)
-    formData.append('price', values.price)
+    formData.append("image", values.image[0]);
+    formData.append("brand", values.brand);
+    formData.append("name", values.name);
+    formData.append("price", values.price);
 
     try {
       const response = await api({
@@ -66,36 +77,36 @@ export default function Create() {
         url: "/product",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
-      })
+      });
       if (response.data.id) {
         toast({
-          title: 'Produto criado com sucesso',
-          status: 'success',
+          title: "Produto criado com sucesso",
+          status: "success",
           duration: 9000,
           isClosable: true,
-        })
+        });
 
-        queryClient.invalidateQueries('products')
-        router.push('/dashboard/products')
+        queryClient.invalidateQueries("products");
+        router.push("/dashboard/products");
       } else {
         toast({
-          title: 'Erro ao criar produto',
-          status: 'error',
+          title: "Erro ao criar produto",
+          status: "error",
           duration: 9000,
           isClosable: true,
-        })
+        });
       }
     } catch (err) {
       if (err.response) {
         toast({
-          status: 'error',
+          status: "error",
           description: err.response.data.message,
           duration: 9000,
           isClosable: true,
-        })
+        });
       }
     }
-  }
+  };
 
   return (
     <Dashboard>
@@ -107,7 +118,9 @@ export default function Create() {
           p={["6", "8"]}
           onSubmit={methods.handleSubmit(handleCreateProduct)}
         >
-          <Heading size="lg" fontWeight="normal">Novo produto</Heading>
+          <Heading size="lg" fontWeight="normal">
+            Novo produto
+          </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack>
             <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
@@ -115,14 +128,14 @@ export default function Create() {
                 name="name"
                 type="text"
                 label="Nome"
-                {...methods.register('name')}
+                {...methods.register("name")}
                 error={errors.name}
               />
               <Input
                 name="price"
                 type="number"
                 label="Preço"
-                {...methods.register('price')}
+                {...methods.register("price")}
                 error={errors.price}
               />
             </SimpleGrid>
@@ -131,7 +144,7 @@ export default function Create() {
                 name="brand"
                 type="text"
                 label="Marca"
-                {...methods.register('brand')}
+                {...methods.register("brand")}
                 error={errors.brand}
               />
             </SimpleGrid>
@@ -161,20 +174,20 @@ export default function Create() {
           </Flex>
         </Box>
       </FormProvider>
-    </Dashboard >
+    </Dashboard>
   );
 }
 
 export const getServerSideProps = async (ctx) => {
-  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const { ["ceubexpress-token"]: token } = parseCookies(ctx);
 
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const apiClient = getAPIClient(ctx);
@@ -182,26 +195,25 @@ export const getServerSideProps = async (ctx) => {
   const { email } = json;
 
   try {
-    const { data } = await apiClient.get(`/user/client/${email}`)
+    const { data } = await apiClient.get(`/user/client/${email}`);
     if (data.isUserAdmin === true) {
       return {
-        props: {}
-      }
-    }
-    else {
+        props: {},
+      };
+    } else {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
-        }
-      }
+        },
+      };
     }
   } catch {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
-}
+};

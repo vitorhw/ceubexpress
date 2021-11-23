@@ -5,20 +5,20 @@ import {
   HStack,
   Spacer,
   IconButton,
-} from '@chakra-ui/react';
-import { RiDeleteBin7Fill } from 'react-icons/ri';
+} from "@chakra-ui/react";
+import { RiDeleteBin7Fill } from "react-icons/ri";
 import { useCart } from "react-use-cart";
 
 export function CartItem({
   id,
-  productBrand = 'Error',
-  productName = 'Error',
-  productPrice = 'Error',
-  productImage = 'Error',
+  productBrand = "Error",
+  productName = "Error",
+  productPrice = "Error",
+  productImage = "Error",
 }) {
-  const formattedPrice = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  const formattedPrice = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   }).format(productPrice);
   const { removeItem } = useCart();
 
@@ -44,23 +44,23 @@ export function CartItem({
         right="0"
         size="xs"
         color="gray.200"
-        onClick={() => { handleRemoveProduct(id) }}
+        onClick={() => {
+          handleRemoveProduct(id);
+        }}
       />
-      <Img
-        src={productImage}
-        objectFit="cover"
-        boxSize="50px"
-      />
+      <Img src={productImage} objectFit="cover" boxSize="50px" />
       <Spacer />
-      <VStack
-        align="start"
-        spacing="1"
-        w="100%"
-      >
-        <Text fontSize="lg" noOfLines={1}>{productName}</Text>
-        <Text fontSize="sm" color="gray.400" noOfLines={1}>{productBrand}</Text>
-        <Text fontSize="sm" fontWeight="bold" color="#FF9737">{formattedPrice}</Text>
+      <VStack align="start" spacing="1" w="100%">
+        <Text fontSize="lg" noOfLines={1}>
+          {productName}
+        </Text>
+        <Text fontSize="sm" color="gray.400" noOfLines={1}>
+          {productBrand}
+        </Text>
+        <Text fontSize="sm" fontWeight="bold" color="#FF9737">
+          {formattedPrice}
+        </Text>
       </VStack>
-    </HStack >
-  )
+    </HStack>
+  );
 }

@@ -1,4 +1,3 @@
-
 import { useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect } from "react";
@@ -6,12 +5,12 @@ import { createContext, useContext, useEffect } from "react";
 const SidebarDrawerContext = createContext({});
 
 export function SidebarDrawerProvider({ children }) {
-  const disclosure = useDisclosure()
-  const router = useRouter()
+  const disclosure = useDisclosure();
+  const router = useRouter();
 
   useEffect(() => {
-    disclosure.onClose()
-  }, [router.asPath])
+    disclosure.onClose();
+  }, [router.asPath]);
 
   return (
     <SidebarDrawerContext.Provider value={disclosure}>
@@ -20,4 +19,4 @@ export function SidebarDrawerProvider({ children }) {
   );
 }
 
-export const useSidebarDrawer = () => useContext(SidebarDrawerContext)
+export const useSidebarDrawer = () => useContext(SidebarDrawerContext);

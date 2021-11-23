@@ -1,14 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
-import { RiStarLine } from 'react-icons/ri';
-import { Text, Center, Skeleton, Flex, Grid, Spinner } from '@chakra-ui/react';
-import { parseCookies } from 'nookies'
-import { AuthContext } from '../contexts/AuthContext';
-import { api } from '../services/api';
-import { Product } from '../components/Product';
-import { getAPIClient } from '../services/axios'
+import { useState, useEffect, useContext } from "react";
+import { RiStarLine } from "react-icons/ri";
+import { Text, Center, Skeleton, Flex, Grid, Spinner } from "@chakra-ui/react";
+import { parseCookies } from "nookies";
+import { AuthContext } from "../contexts/AuthContext";
+import { api } from "../services/api";
+import { Product } from "../components/Product";
+import { getAPIClient } from "../services/axios";
 
-import jwt from 'jsonwebtoken';
-
+import jwt from "jsonwebtoken";
 
 function Favourites({ favoriteList }) {
   const [loading, setLoading] = useState(true);
@@ -16,7 +15,6 @@ function Favourites({ favoriteList }) {
   const { user } = useContext(AuthContext);
 
   async function retrieveFavourites() {
-
     if (!user) {
       return;
     }
@@ -34,7 +32,7 @@ function Favourites({ favoriteList }) {
       <Center my="8rem">
         <Spinner />
       </Center>
-    )
+    );
   }
 
   if (favorites.length === 0) {
@@ -49,19 +47,18 @@ function Favourites({ favoriteList }) {
         <RiStarLine />
         <Text ml="2">faça seu primeiro favorito</Text>
       </Center>
-    )
+    );
   }
 
   return (
     <Flex w="100%" justify="center" my="4rem">
       <Grid
-        templateColumns={{ sm: 'repeat(1, 1fr)', lg: 'repeat(4, 1fr)' }}
+        templateColumns={{ sm: "repeat(1, 1fr)", lg: "repeat(4, 1fr)" }}
         gap={6}
       >
-        {favorites.map(favorite => (
-          <Skeleton isLoaded={!loading}>
+        {favorites.map((favorite) => (
+          <Skeleton isLoaded={!loading} key={favorite.product.id}>
             <Product
-              key={favorite.product.id}
               id={favorite.product.id}
               isFavourite={favoriteList.includes(favorite.product.id)}
               productBrand={favorite.product.brand}
@@ -73,21 +70,21 @@ function Favourites({ favoriteList }) {
         ))}
       </Grid>
     </Flex>
-  )
+  );
 }
 
-export default Favourites
+export default Favourites;
 
 export const getServerSideProps = async (ctx) => {
-  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const { ["ceubexpress-token"]: token } = parseCookies(ctx);
 
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const apiClient = getAPIClient(ctx);
@@ -96,21 +93,21 @@ export const getServerSideProps = async (ctx) => {
   let data = [];
 
   try {
-    const response = await apiClient.get(`/favorites/${sub}`)
+    const response = await apiClient.get(`/favorites/${sub}`);
     data = response.data.map((favorite) => {
-      return favorite.product.id
-    })
+      return favorite.product.id;
+    });
   } catch {
     return {
       props: {
         favoriteList: [],
-      }
-    }
+      },
+    };
   }
 
   return {
     props: {
       favoriteList: data,
-    }
-  }
-}
+    },
+  };
+};

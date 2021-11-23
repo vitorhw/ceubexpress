@@ -11,7 +11,7 @@ export function Counter({ from, to }) {
       duration: 1,
       onUpdate(value) {
         node.textContent = value.toFixed(0);
-      }
+      },
     });
 
     return () => controls.stop();

@@ -1,22 +1,22 @@
-import { useSidebarDrawer } from '../contexts/SidebarDrawerContext'
-import { RiMenuLine, RiArrowDropRightLine } from 'react-icons/ri'
+import { useSidebarDrawer } from "../contexts/SidebarDrawerContext";
+import { RiMenuLine, RiArrowDropRightLine } from "react-icons/ri";
 import {
   Flex,
   useBreakpointValue,
   IconButton,
   Icon,
   Button,
-  Text
-} from '@chakra-ui/react'
-import Link from 'next/link'
+  Text,
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 export function DashHeader() {
-  const { onOpen } = useSidebarDrawer()
+  const { onOpen } = useSidebarDrawer();
 
   const isWideVersion = useBreakpointValue({
     base: false,
-    lg: true
-  })
+    lg: true,
+  });
 
   return (
     <Flex
@@ -38,8 +38,7 @@ export function DashHeader() {
           onClick={onOpen}
           display="flex"
           mr="2"
-        >
-        </IconButton>
+        ></IconButton>
       )}
       <Link href="/dashboard">
         <Text
@@ -51,8 +50,12 @@ export function DashHeader() {
           cursor="pointer"
         >
           ex
-          <Text as="span" ml="1" color="pink.500">.</Text>
-          <Text as="span" ml="1" color="pink.500">dash</Text>
+          <Text as="span" ml="1" color="pink.500">
+            .
+          </Text>
+          <Text as="span" ml="1" color="pink.500">
+            dash
+          </Text>
         </Text>
       </Link>
       <Flex align="center" ml="auto">
@@ -67,5 +70,5 @@ export function DashHeader() {
         </Link>
       </Flex>
     </Flex>
-  )
+  );
 }

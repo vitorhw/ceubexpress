@@ -1,12 +1,10 @@
-import { Flex } from '@chakra-ui/react'
-import { DashHeader } from './DashHeader'
-import { Sidebar } from './Sidebar'
-import { SidebarDrawerProvider } from '../contexts/SidebarDrawerContext'
-
+import { Flex } from "@chakra-ui/react";
+import { DashHeader } from "./DashHeader";
+import { Sidebar } from "./Sidebar";
+import { SidebarDrawerProvider } from "../contexts/SidebarDrawerContext";
 
 export function Dashboard({ children }) {
   return (
-
     <SidebarDrawerProvider>
       <Flex direction="column" minH="100vh">
         <DashHeader />
@@ -16,6 +14,5 @@ export function Dashboard({ children }) {
         </Flex>
       </Flex>
     </SidebarDrawerProvider>
-  )
+  );
 }
-

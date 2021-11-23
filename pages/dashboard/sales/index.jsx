@@ -13,45 +13,49 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
-import { useState } from 'react'
-import { Pagination } from '../../../components/Pagination'
-import { parseCookies } from 'nookies'
-import { useQuery } from 'react-query'
-import { getAPIClient } from '../../../services/axios'
-import { api } from '../../../services/api'
+import { useState } from "react";
+import { Pagination } from "../../../components/Pagination";
+import { parseCookies } from "nookies";
+import { useQuery } from "react-query";
+import { getAPIClient } from "../../../services/axios";
+import { api } from "../../../services/api";
 
-import jwt from 'jsonwebtoken'
-
+import jwt from "jsonwebtoken";
 
 export default function Sales() {
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false)
-  const take = 10
+  const take = 10;
 
   async function getSales(page) {
-    const { data } = await api.get(`/purchase?take=${take}&skip=${(page - 1) * take}`)
-    const totalCount = data.purchasesCount
-    const sales = data.purchases
+    const { data } = await api.get(
+      `/purchase?take=${take}&skip=${(page - 1) * take}`
+    );
+    const totalCount = data.purchasesCount;
+    const sales = data.purchases;
 
     return {
       sales,
-      totalCount
-    }
+      totalCount,
+    };
   }
 
-  const { data, isLoading, isFetching, error } = useQuery(['sales', page], () => getSales(page), {
-    staleTime: 1000 * 60 * 10, // 10 minutes
-  })
-
+  const { data, isLoading, isFetching, error } = useQuery(
+    ["sales", page],
+    () => getSales(page),
+    {
+      staleTime: 1000 * 60 * 10, // 10 minutes
+    }
+  );
 
   return (
-    <Dashboard >
+    <Dashboard>
       <Box flex="1" borderRadius={8} p="8">
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="lg" fontWeight="normal">
             Vendas
-
-            {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
+            {!isLoading && isFetching && (
+              <Spinner size="sm" color="gray.500" ml="4" />
+            )}
           </Heading>
         </Flex>
 
@@ -74,21 +78,24 @@ export default function Sales() {
                 </Tr>
               </Thead>
               <Tbody>
-                {data.sales.map(sale => {
+                {data.sales.map((sale) => {
                   return (
                     <Tr key={sale.id}>
                       <Td>
                         <Box>
-                          <Text fontWeight="bold" color="pink.500">{sale.user.name}</Text>
+                          <Text fontWeight="bold" color="pink.500">
+                            {sale.user.name}
+                          </Text>
                         </Box>
                       </Td>
                       <Td>
                         <Box>
-                          <Badge
-                            colorScheme={sale.isPaid ? "green" : "red"}
-                          >{sale.isPaid ? "Pago" : "Pendente"}</Badge>
+                          <Badge colorScheme={sale.isPaid ? "green" : "red"}>
+                            {sale.isPaid ? "Pago" : "Pendente"}
+                          </Badge>
                           <Text>
-                            R${new Intl.NumberFormat('pt-BR', {
+                            R$
+                            {new Intl.NumberFormat("pt-BR", {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }).format(sale.amount / 100)}
@@ -96,10 +103,14 @@ export default function Sales() {
                         </Box>
                       </Td>
                       <Td>
-                        {new Date(sale.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {new Date(sale.created_at).toLocaleDateString("pt-BR", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </Td>
                     </Tr>
-                  )
+                  );
                 })}
               </Tbody>
             </Table>
@@ -118,15 +129,15 @@ export default function Sales() {
 }
 
 export const getServerSideProps = async (ctx) => {
-  const { ['ceubexpress-token']: token } = parseCookies(ctx)
+  const { ["ceubexpress-token"]: token } = parseCookies(ctx);
 
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const apiClient = getAPIClient(ctx);
@@ -134,26 +145,25 @@ export const getServerSideProps = async (ctx) => {
   const { email } = json;
 
   try {
-    const { data } = await apiClient.get(`/user/client/${email}`)
+    const { data } = await apiClient.get(`/user/client/${email}`);
     if (data.isUserAdmin === true) {
       return {
-        props: {}
-      }
-    }
-    else {
+        props: {},
+      };
+    } else {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
-        }
-      }
+        },
+      };
     }
   } catch {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
-      }
-    }
+      },
+    };
   }
-}
+};

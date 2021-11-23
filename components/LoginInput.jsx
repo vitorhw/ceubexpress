@@ -9,16 +9,15 @@ import {
   useColorMode,
   Icon,
   VStack,
-  useBreakpointValue
-} from '@chakra-ui/react';
-import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-import { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthContext'
-import { useForm } from 'react-hook-form'
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
+import { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import { useForm } from "react-hook-form";
 
-import Router from 'next/router'
-import Link from 'next/link'
-
+import Router from "next/router";
+import Link from "next/link";
 
 export function LoginInput({ handleLoginClose }) {
   const [show, setShow] = useState(false);
@@ -35,18 +34,17 @@ export function LoginInput({ handleLoginClose }) {
     setIsLogging(false);
   }
 
-
   useEffect(() => {
     if (user) {
-      Router.reload()
+      Router.reload();
     }
-  }, [user])
+  }, [user]);
 
   const isSmallVersion = useBreakpointValue({
     base: true,
     sm: true,
     md: true,
-    lg: false
+    lg: false,
   });
 
   return (
@@ -57,7 +55,11 @@ export function LoginInput({ handleLoginClose }) {
       onSubmit={handleSubmit(handleSignIn)}
       alignSelf="center"
       boxSize={isSmallVersion ? "100%" : "50%"}
-      border={colorMode === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)'}
+      border={
+        colorMode === "light"
+          ? "1px solid rgba(0,0,0,0.1)"
+          : "1px solid rgba(255,255,255,0.1)"
+      }
       p="6"
       rounded="md"
     >
@@ -66,18 +68,18 @@ export function LoginInput({ handleLoginClose }) {
         <Input
           type="email"
           placeholder="Email"
-          name='password'
-          {...register('email')}
+          name="password"
+          {...register("email")}
         />
       </InputGroup>
 
       <InputGroup size="md">
         <Input
           pr="4.5rem"
-          type={show ? 'text' : 'password'}
+          type={show ? "text" : "password"}
           placeholder="Senha"
-          name='password'
-          {...register('password')}
+          name="password"
+          {...register("password")}
         />
         <InputRightElement width="3rem">
           <IconButton
@@ -89,12 +91,7 @@ export function LoginInput({ handleLoginClose }) {
         </InputRightElement>
       </InputGroup>
 
-
-      <Button
-        isLoading={isLogging}
-        loadingText="Entrando"
-        type="submit"
-      >
+      <Button isLoading={isLogging} loadingText="Entrando" type="submit">
         Login
       </Button>
 

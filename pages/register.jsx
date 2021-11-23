@@ -42,7 +42,8 @@ const createUserFormSchema = yup.object().shape({
 
 export default function Register() {
   const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(createUserFormSchema)
+    resolver: yupResolver(createUserFormSchema),
+    mode: "onBlur",
   })
   const { errors } = formState
   const [userCounter, setUserCounter] = useState(0)

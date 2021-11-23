@@ -41,17 +41,20 @@ export function DashHeader() {
         >
         </IconButton>
       )}
-      <Text
-        fontSize={["2xl", "3xl"]}
-        fontWeight="bold"
-        letterSpacing="tight"
-        w="64"
-        lineHeight="0"
-      >
-        ex
-        <Text as="span" ml="1" color="pink.500">.</Text>
-        <Text as="span" ml="1" color="pink.500">dash</Text>
-      </Text>
+      <Link href="/dashboard">
+        <Text
+          fontSize={["2xl", "3xl"]}
+          fontWeight="bold"
+          letterSpacing="tight"
+          w="64"
+          lineHeight="0"
+          cursor="pointer"
+        >
+          ex
+          <Text as="span" ml="1" color="pink.500">.</Text>
+          <Text as="span" ml="1" color="pink.500">dash</Text>
+        </Text>
+      </Link>
       <Flex align="center" ml="auto">
         <Link href="/">
           <Button

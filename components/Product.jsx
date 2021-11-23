@@ -48,8 +48,9 @@ export function Product({
     }
     setLoading(true)
     if (favourite) {
-      const response = await api.delete(`/favorites/${id}`)
-      console.log(response)
+      const response = await api.delete(`/favorites/${id}`, {
+        userId: user.id,
+      })
       if (response) {
         setFavourite(false)
       }
@@ -58,7 +59,6 @@ export function Product({
         productId: id,
         userId: user.id
       })
-      console.log(response)
       if (response) {
         setFavourite(true)
       }

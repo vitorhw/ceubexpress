@@ -21,8 +21,12 @@ export function AuthProvider({ children }) {
 
   async function retrieveUser(token) {
     const json = jwt.decode(token);
-    const response = await api.get(`user/${json.email}`)
-    setUser(response.data)
+    try {
+      const response = await api.get(`user/${json.email}`)
+      setUser(response.data)
+    } catch {
+      return
+    }
   }
 
   useEffect(() => {

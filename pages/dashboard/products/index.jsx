@@ -18,27 +18,35 @@ import { Dashboard } from "../../../components/Dashboard";
 import { RiAddLine, RiPencilLine } from 'react-icons/ri'
 import { Pagination } from "../../../components/Pagination";
 import { useState } from 'react'
-import faker from 'faker'
-import Link from 'next/link'
 import { parseCookies } from 'nookies'
+import { useQuery } from 'react-query'
+import { queryClient } from '../../../services/queryClient'
+import { getAPIClient } from '../../../services/axios'
+import { api } from '../../../services/api'
 
+import Link from 'next/link'
 import jwt from 'jsonwebtoken'
+
 
 export default function Products() {
   const [page, setPage] = useState(1);
-  const isLoading = false
-  const isFetching = false
-  const error = undefined
+  const [loading, setLoading] = useState(false)
+  const take = 10
 
-  const products = [...Array(10)].map((_, i) => {
-    const name = faker.commerce.product();
+  async function getProducts(page) {
+    const { data } = await api.get(`/product/pagination?take=${take}&skip=${(page - 1) * take}`)
+    const totalCount = data.productsCount
+    const products = data.products
+
     return {
-      id: i,
-      name,
-      price: faker.random.number({ min: 0, max: 1000 }).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-      createdAt: faker.date.past().toLocaleDateString('pt-BR', { day: 'numeric', month: 'numeric', year: 'numeric' }),
+      products,
+      totalCount
     }
-  });
+  }
+
+  const { data, isLoading, isFetching, error } = useQuery(['products', page], () => getProducts(page), {
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  })
 
   return (
     <Dashboard>
@@ -86,11 +94,11 @@ export default function Products() {
                 </Tr>
               </Thead>
               <Tbody>
-                {products.map(product => {
+                {data.products.map(product => {
                   return (
                     <Tr key={product.id}>
                       <Td>
-                        <Link href="products/edit/1">
+                        <Link href={`products/edit/${product.id}`}>
                           <IconButton>
                             <Icon as={RiPencilLine} fontSize="20" />
                           </IconButton>
@@ -100,10 +108,17 @@ export default function Products() {
                       <Td>
                         <Box>
                           <Text fontWeight="bold" noOfLines={1}>{product.name}</Text>
-                          <Text fontSize="sm" color="gray.300">{product.price}</Text>
+                          <Text fontSize="sm" color="gray.300">
+                            R${new Intl.NumberFormat('pt-BR', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }).format(product.price)}
+                          </Text>
                         </Box>
                       </Td>
-                      <Td>{product.createdAt}</Td>
+                      <Td>
+                        {new Date(product.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </Td>
                     </Tr>
                   )
                 })}
@@ -111,7 +126,8 @@ export default function Products() {
             </Table>
 
             <Pagination
-              totalCountOfRegisters={100}
+              totalCountOfRegisters={data.totalCount}
+              registerPerPage={take}
               currentPage={page}
               onPageChange={setPage}
             />
@@ -124,9 +140,8 @@ export default function Products() {
 
 export const getServerSideProps = async (ctx) => {
   const { ['ceubexpress-token']: token } = parseCookies(ctx)
-  const json = jwt.decode(token);
 
-  if (!json.role) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -135,7 +150,31 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
-  return {
-    props: {}
+  const apiClient = getAPIClient(ctx);
+  const json = jwt.decode(token);
+  const { email } = json;
+
+  try {
+    const { data } = await apiClient.get(`/user/client/${email}`)
+    if (data.isUserAdmin === true) {
+      return {
+        props: {}
+      }
+    }
+    else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        }
+      }
+    }
+  } catch {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
   }
 }

@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   function handleLoginClose() {
-    setIsLoginModalOpen(false);
+    setIsLoginModalOpen(false)
   }
 
   Router.events.on('routeChangeStart', () => NProgress.start());

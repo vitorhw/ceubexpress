@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../../services/api'
 import { parseCookies } from 'nookies'
 import { Counter } from "../../components/Counter"
+import { getAPIClient } from '../../services/axios'
 
 import jwt from 'jsonwebtoken'
 
@@ -70,9 +71,8 @@ export default index
 
 export const getServerSideProps = async (ctx) => {
   const { ['ceubexpress-token']: token } = parseCookies(ctx)
-  const json = jwt.decode(token);
 
-  if (!json.role) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -81,7 +81,31 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
-  return {
-    props: {}
+  const apiClient = getAPIClient(ctx);
+  const json = jwt.decode(token);
+  const { email } = json;
+
+  try {
+    const { data } = await apiClient.get(`/user/client/${email}`)
+    if (data.isUserAdmin === true) {
+      return {
+        props: {}
+      }
+    }
+    else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        }
+      }
+    }
+  } catch {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
   }
 }

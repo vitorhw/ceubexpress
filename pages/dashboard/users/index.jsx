@@ -25,10 +25,11 @@ import { getAPIClient } from '../../../services/axios'
 
 import jwt from 'jsonwebtoken'
 
+
 export default function Users() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false)
-  const take = 2
+  const take = 10
   const delay = (amount = 3000) => new Promise(resolve => setTimeout(resolve, amount))
 
 
@@ -58,6 +59,7 @@ export default function Users() {
         queryClient.invalidateQueries('users')
       }
     }
+
 
     await delay()
     setLoading(false)
@@ -107,7 +109,7 @@ export default function Users() {
                           <Text fontSize="sm" color="gray.300">{user.email}</Text>
                         </Box>
                       </Td>
-                      <Td>{user.stripe_customer_id}</Td>
+                      <Td>{new Date(user.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</Td>
                     </Tr>
                   )
                 })}
@@ -145,8 +147,7 @@ export const getServerSideProps = async (ctx) => {
 
   try {
     const { data } = await apiClient.get(`/user/client/${email}`)
-    if (!data.isUserAdmin) {
-      // DATA.ISUSERADMIN
+    if (data.isUserAdmin === true) {
       return {
         props: {}
       }

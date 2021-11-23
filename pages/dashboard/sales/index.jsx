@@ -9,42 +9,40 @@ import {
   Th,
   Tbody,
   Td,
+  Badge,
   Text,
 } from "@chakra-ui/react";
 import { Dashboard } from "../../../components/Dashboard";
 import { useState } from 'react'
-import faker from 'faker'
 import { Pagination } from '../../../components/Pagination'
 import { parseCookies } from 'nookies'
+import { useQuery } from 'react-query'
+import { getAPIClient } from '../../../services/axios'
+import { api } from '../../../services/api'
 
 import jwt from 'jsonwebtoken'
 
+
 export default function Sales() {
   const [page, setPage] = useState(1);
-  const isLoading = false
-  const isFetching = false
-  const error = undefined
+  const [loading, setLoading] = useState(false)
+  const take = 10
 
+  async function getSales(page) {
+    const { data } = await api.get(`/purchase?take=${take}&skip=${(page - 1) * take}`)
+    const totalCount = data.purchasesCount
+    const sales = data.purchases
 
-  // async function handlePrefetchUser(userId) {
-  //   await queryClient.prefetchQuery(['user', userId], async () => {
-  //     const response = await api.get(`users/${userId}`)
-
-  //     return response.data;
-  //   }, {
-  //     staleTime: 1000 * 60 * 10 // 10 min
-  //   })
-  // }
-
-  const users = [...Array(10)].map((_, i) => {
-    const name = faker.name.findName();
     return {
-      id: i,
-      name,
-      spent: faker.random.number({ min: 0, max: 1000 }).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-      createdAt: faker.date.past().toLocaleDateString('pt-BR', { day: 'numeric', month: 'numeric', year: 'numeric' }),
+      sales,
+      totalCount
     }
-  });
+  }
+
+  const { data, isLoading, isFetching, error } = useQuery(['sales', page], () => getSales(page), {
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  })
+
 
   return (
     <Dashboard >
@@ -70,22 +68,36 @@ export default function Sales() {
             <Table colorScheme="whiteAlpha">
               <Thead>
                 <Tr>
-                  <Th>Usuário</Th>
+                  <Th>Comprador</Th>
                   <Th>Total</Th>
                   <Th>Data</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {users.map(user => {
+                {data.sales.map(sale => {
                   return (
-                    <Tr key={user.id}>
+                    <Tr key={sale.id}>
                       <Td>
                         <Box>
-                          <Text fontWeight="bold" color="pink.500">{user.name}</Text>
+                          <Text fontWeight="bold" color="pink.500">{sale.user.name}</Text>
                         </Box>
                       </Td>
-                      <Td>{user.spent}</Td>
-                      <Td>{user.createdAt}</Td>
+                      <Td>
+                        <Box>
+                          <Badge
+                            colorScheme={sale.isPaid ? "green" : "red"}
+                          >{sale.isPaid ? "Pago" : "Pendente"}</Badge>
+                          <Text>
+                            R${new Intl.NumberFormat('pt-BR', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }).format(sale.amount / 100)}
+                          </Text>
+                        </Box>
+                      </Td>
+                      <Td>
+                        {new Date(sale.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </Td>
                     </Tr>
                   )
                 })}
@@ -93,7 +105,8 @@ export default function Sales() {
             </Table>
 
             <Pagination
-              totalCountOfRegisters={1000}
+              totalCountOfRegisters={data.totalCount}
+              registerPerPage={take}
               currentPage={page}
               onPageChange={setPage}
             />
@@ -106,9 +119,8 @@ export default function Sales() {
 
 export const getServerSideProps = async (ctx) => {
   const { ['ceubexpress-token']: token } = parseCookies(ctx)
-  const json = jwt.decode(token);
 
-  if (!json.role) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -117,7 +129,31 @@ export const getServerSideProps = async (ctx) => {
     }
   }
 
-  return {
-    props: {}
+  const apiClient = getAPIClient(ctx);
+  const json = jwt.decode(token);
+  const { email } = json;
+
+  try {
+    const { data } = await apiClient.get(`/user/client/${email}`)
+    if (data.isUserAdmin === true) {
+      return {
+        props: {}
+      }
+    }
+    else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        }
+      }
+    }
+  } catch {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
   }
 }

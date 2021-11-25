@@ -15,12 +15,22 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup.umd";
 import { parseCookies } from "nookies";
 import { api } from "../services/api";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Counter } from "../components/Counter";
 
+import ReactCanvasConfetti from "react-canvas-confetti";
 import faker from "faker";
 import * as yup from "yup";
+
+const canvasStyles = {
+  position: "fixed",
+  pointerEvents: "none",
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+};
 
 const avatars = [...Array(5)].map((_, i) => ({
   id: i,
@@ -53,6 +63,50 @@ export default function Register() {
   const { signUp } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
+  const refAnimationInstance = useRef(null);
+
+  const getInstance = useCallback((instance) => {
+    refAnimationInstance.current = instance;
+  }, []);
+
+  const makeShot = useCallback((particleRatio, opts) => {
+    refAnimationInstance.current &&
+      refAnimationInstance.current({
+        ...opts,
+        origin: { y: 0.7 },
+        particleCount: Math.floor(200 * particleRatio),
+      });
+  }, []);
+
+  const fire = useCallback(() => {
+    makeShot(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    makeShot(0.2, {
+      spread: 60,
+    });
+
+    makeShot(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, [makeShot]);
+
   useEffect(() => {
     async function getUserCount() {
       const response = await api.get("/user/quantity");
@@ -64,12 +118,15 @@ export default function Register() {
 
   const handleCreateUser = async (values) => {
     setIsLoading(true);
-    signUp({
+    const sign = await signUp({
       name: values.name,
       email: values.email,
       password: values.password,
     });
-    setIsLoading(true);
+    if (sign === "success") {
+      fire();
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -188,6 +245,10 @@ export default function Register() {
             >
               Registrar-se
             </Button>
+            <ReactCanvasConfetti
+              refConfetti={getInstance}
+              style={canvasStyles}
+            />
           </Stack>
         </Stack>
       </Container>

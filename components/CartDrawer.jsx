@@ -53,6 +53,8 @@ export function CartDrawer({ setIsLoginModalOpen }) {
         userId: user.id,
       });
 
+      console.log(purchaseResponse);
+
       if (purchaseResponse) {
         emptyCart();
         router.push(purchaseResponse.data.success);

@@ -15,7 +15,6 @@ export const FileInput = (props) => {
   const { name, label = name } = props;
   const { register, unregister, setValue, watch } = useFormContext();
   const files = watch(name);
-  console.log(colorMode);
 
   const onDrop = useCallback(
     (droppedFiles) => {

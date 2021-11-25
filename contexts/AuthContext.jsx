@@ -82,6 +82,7 @@ export function AuthProvider({ children }) {
           isClosable: true,
         });
         await signIn({ email, password });
+        return "success";
       }
     } else {
       toast({

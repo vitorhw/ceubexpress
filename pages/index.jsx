@@ -131,6 +131,7 @@ function Home({ favoriteList }) {
     <>
       <InputGroup w="80%" maxW="400px" justify="center" m="auto" mt="4rem">
         <InputRightElement
+          zIndex={-1}
           children={<RiMagicFill color="gray.300" />}
           pointerEvents="none"
         />

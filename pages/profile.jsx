@@ -106,8 +106,7 @@ function profile() {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Você realmente deseja excluir sua conta? Essa ação não poderá ser
-              revertida.
+              Pena, mas você não pode excluir sua conta.
             </AlertDialogBody>
 
             <AlertDialogFooter>

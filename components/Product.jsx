@@ -128,6 +128,7 @@ export function Product({
             maxW={{ lg: "240px" }}
             src={productImage}
             alt="produto"
+            p={2}
           />
         </VStack>
         <VStack

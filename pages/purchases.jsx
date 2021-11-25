@@ -5,16 +5,20 @@ import {
   Flex,
   HStack,
   Spinner,
+  Icon,
   Button,
   Image,
+  Link as ChakraLink,
   useBreakpointValue,
   Skeleton,
 } from "@chakra-ui/react";
-import { RiShoppingCart2Line } from "react-icons/ri";
+import { RiShoppingCart2Line, RiExternalLinkLine } from "react-icons/ri";
 import { useState, useEffect, useContext } from "react";
 import { api } from "../services/api";
 import { parseCookies } from "nookies";
 import { AuthContext } from "../contexts/AuthContext";
+
+import Router from "next/router";
 
 function Purchases() {
   const isSmallVersion = useBreakpointValue({
@@ -26,6 +30,7 @@ function Purchases() {
   const [purchases, setPurchases] = useState([]);
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(false);
 
   async function retrievePurchases() {
     if (!user) {
@@ -71,7 +76,7 @@ function Purchases() {
             align="center"
             justify="space-between"
             px="8"
-            py="2"
+            py="8"
             border="0.5px solid rgba(196, 196, 196, 0.3)"
             borderRadius="md"
             mb={4}
@@ -94,7 +99,7 @@ function Purchases() {
                   ></Image>
                   <Box>
                     <Text fontSize="xl">{productItem.product.name}</Text>
-                    <Text>
+                    <Text fontWeight="light">
                       {productItem.product.price.toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
@@ -106,10 +111,34 @@ function Purchases() {
             </Box>
             <Box>
               {purchase.isPaid ? (
+                <Box align="center" mb={4}>
+                  <Text
+                    px="3"
+                    py="0.5rem"
+                    bgColor="green.300"
+                    borderRadius="md"
+                    color="white"
+                    textAlign="center"
+                    fontWeight="bold"
+                    mt={isSmallVersion ? 4 : 0}
+                    mb={2}
+                  >
+                    Pago
+                  </Text>
+                  <ChakraLink
+                    href={purchase.receipt_url}
+                    isExternal
+                    display="inline-block"
+                    lineHeight="0"
+                  >
+                    Recibo <Icon as={RiExternalLinkLine} my="-0.5" mx="1px" />
+                  </ChakraLink>
+                </Box>
+              ) : purchase.isPurchaseExpired ? (
                 <Text
                   px="3"
                   py="0.5rem"
-                  bgColor="green.300"
+                  bgColor="red.300"
                   borderRadius="md"
                   color="white"
                   textAlign="center"
@@ -117,7 +146,7 @@ function Purchases() {
                   mb={4}
                   mt={isSmallVersion ? 4 : 0}
                 >
-                  Pago
+                  Cancelado
                 </Text>
               ) : (
                 <Button
@@ -129,6 +158,11 @@ function Purchases() {
                   colorScheme="blue"
                   mb={4}
                   mt={isSmallVersion ? 4 : 0}
+                  isLoading={fetching}
+                  onClick={() => {
+                    setFetching(true);
+                    Router.push(purchase.purchase_url);
+                  }}
                 >
                   Finalizar Compra
                 </Button>

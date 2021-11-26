@@ -52,7 +52,7 @@ const createUserFormSchema = yup.object().shape({
     .max(30, "Marca deve conter no máximo 60 caractes"),
 });
 
-export default function Create({ pid, pname, pprice, pbrand }) {
+export default function Create({ pid, pname, pprice, pbrand, pimage }) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
@@ -73,17 +73,10 @@ export default function Create({ pid, pname, pprice, pbrand }) {
   const handleCreateProduct = async (values) => {
     const formData = new FormData();
 
-    if (!values.image) {
-      toast({
-        title: "Erro, selecione uma imagem!",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
+    if (values.image) {
+      formData.append("image", values.image[0]);
     }
 
-    formData.append("image", values.image[0]);
     formData.append("brand", values.brand);
     formData.append("name", values.name);
     formData.append("price", values.price);
@@ -206,6 +199,7 @@ export default function Create({ pid, pname, pprice, pbrand }) {
                   accept="image/png, image/jpg, image/jpeg, image/gif"
                   name="image"
                   label="Imagem"
+                  imagePreview={pimage}
                 />
               </Box>
             </SimpleGrid>
@@ -297,6 +291,7 @@ export const getServerSideProps = async (ctx) => {
           pname: data.name,
           pprice: data.price,
           pbrand: data.brand,
+          pimage: data.image,
         },
       };
     } else {

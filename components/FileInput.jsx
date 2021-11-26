@@ -71,6 +71,16 @@ export const FileInput = (props) => {
         >
           <Text className=" ">Carregue a sua imagem aqui ...</Text>
 
+          {console.log(files?.length)}
+          {files?.length === 0 ||
+            (files?.length === undefined && props.imagePreview && (
+              <Image
+                alt="preview"
+                src={props.imagePreview}
+                mt="1rem"
+                height="200px"
+              />
+            ))}
           {!!files?.length && (
             <Box className=" ">
               {files.map((file) => {

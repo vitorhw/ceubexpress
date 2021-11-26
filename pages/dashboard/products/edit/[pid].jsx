@@ -39,17 +39,17 @@ const createUserFormSchema = yup.object().shape({
     .string()
     .required("Nome é obrigatório")
     .min(3, "Nome deve conter no mínimo 3 caracteres")
-    .max(30, "Nome deve conter no máximo 60 caractes"),
+    .max(100, "Nome deve conter no máximo 100 caractes"),
   price: yup
     .number()
     .required("Preço é obrigatório")
     .min(0, "Preço deve ser maior que R$0,00")
-    .max(10000, "Preço deve ser menor que R$10.001"),
+    .max(10000000, "Preço deve ser menor que R$10.000.000"),
   brand: yup
     .string()
     .required("Marca é obrigatório")
     .min(3, "Marca deve conter no mínimo 3 caracteres")
-    .max(30, "Marca deve conter no máximo 60 caractes"),
+    .max(60, "Marca deve conter no máximo 60 caractes"),
 });
 
 export default function Create({ pid, pname, pprice, pbrand, pimage }) {

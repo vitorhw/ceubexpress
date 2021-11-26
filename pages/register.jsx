@@ -23,6 +23,8 @@ import ReactCanvasConfetti from "react-canvas-confetti";
 import faker from "faker";
 import * as yup from "yup";
 
+faker.locale = "pt_BR";
+
 const canvasStyles = {
   position: "fixed",
   pointerEvents: "none",
@@ -129,6 +131,14 @@ export default function Register() {
     setIsLoading(false);
   };
 
+  // const avatars = [...Array(90)].map((_, i) =>
+  // (
+  //   {
+  //   id: i,
+  //   name: faker.name.findName(),
+  //   email: faker.internet.email(),
+  //   password: 123456
+  // }));
   return (
     <Box position={"relative"}>
       <Container

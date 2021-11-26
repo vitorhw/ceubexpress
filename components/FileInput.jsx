@@ -16,6 +16,18 @@ export const FileInput = (props) => {
   const { register, unregister, setValue, watch } = useFormContext();
   const files = watch(name);
 
+  // document.onpaste = function (event) {
+  //   var items = (event.clipboardData || event.originalEvent.clipboardData)
+  //     .items;
+  //   for (index in items) {
+  //     var item = items[index];
+  //     if (item.kind === "file") {
+  //       // adds the file to your dropzone instance
+  //       myDropzone.addFile(item.getAsFile());
+  //     }
+  //   }
+  // };
+
   const onDrop = useCallback(
     (droppedFiles) => {
       setValue(name, droppedFiles, { shouldValidate: true });

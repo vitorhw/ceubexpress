@@ -44,7 +44,7 @@ const createUserFormSchema = yup.object().shape({
     .number()
     .required("Preço é obrigatório")
     .min(0, "Preço deve ser maior que R$0,00")
-    .max(10000000, "Preço deve ser menor que R$10.000.000"),
+    .max(1000000000, "Preço deve ser menor que R$1.000.000.000"),
   brand: yup
     .string()
     .required("Marca é obrigatório")

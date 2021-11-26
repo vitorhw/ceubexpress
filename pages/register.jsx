@@ -131,14 +131,6 @@ export default function Register() {
     setIsLoading(false);
   };
 
-  // const avatars = [...Array(90)].map((_, i) =>
-  // (
-  //   {
-  //   id: i,
-  //   name: faker.name.findName(),
-  //   email: faker.internet.email(),
-  //   password: 123456
-  // }));
   return (
     <Box position={"relative"}>
       <Container

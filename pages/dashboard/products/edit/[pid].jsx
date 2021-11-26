@@ -28,8 +28,11 @@ import { FileInput } from "../../../../components/FileInput";
 import { getAPIClient } from "../../../../services/axios";
 import { useState, useRef } from "react";
 import { queryClient } from "../../../../services/queryClient";
+import { ptForm } from "yup-locale-pt";
 
 import jwt from "jsonwebtoken";
+
+yup.setLocale(ptForm);
 
 const createUserFormSchema = yup.object().shape({
   name: yup
@@ -183,6 +186,7 @@ export default function Create({ pid, pname, pprice, pbrand }) {
                 name="price"
                 type="number"
                 label="Preço"
+                step="0.01"
                 {...methods.register("price")}
                 error={errors.price}
               />

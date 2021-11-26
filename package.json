@@ -41,7 +41,8 @@
     "react-query": "^3.33.2",
     "react-use-cart": "^1.13.0",
     "web-vitals": "^1.0.1",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-locale-pt": "^0.0.9"
   },
   "scripts": {
     "dev": "next dev",
